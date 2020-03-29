@@ -1,0 +1,9 @@
+{{- if .Values.masternode.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.masternode.componentName }}-init
+data:
+  master-init.sh: |
+{{ .Files.Get "files/masternode/master-init.sh" | indent 4}}
+{{- end }}

@@ -1,0 +1,37 @@
+{ "blueprint":"hdfs",
+"default_password" : "dev",
+"configurations" : [
+    {
+        "hive-site": {
+          "properties_attributes" : { },
+          "properties" : {
+            "javax.jdo.option.ConnectionURL" : "jdbc:postgresql://postgres-0/metastore",
+            "javax.jdo.option.ConnectionDriverName" : "org.postgresql.Driver",
+            "javax.jdo.option.ConnectionUserName" : "hiveuser",
+            "javax.jdo.option.ConnectionPassword" : "123456789"
+          }
+        }
+      },
+      {
+        "hive-env": {
+          "properties_attributes" : { },
+          "properties" : {
+            "hive_database" : "Existing PostgresSQL Database",
+            "hive_database_type" : "postgres",
+            "hive_database_name" : "metastore"
+          }
+        }
+      }
+],
+"host_groups":[
+  { "name":"host_group_1",
+    "hosts":[ { "fqdn":"{{ .Values.datanode.name }}-0.{{ .Values.teamname }}" } ]
+  },
+  { "name":"host_group_2",
+    "hosts":[ { "fqdn":"{{ .Values.masternode.name }}-0.{{ .Values.teamname }}" }]
+  },
+  { "name":"host_group_3",
+    "hosts":[ { "fqdn":"{{ .Values.edgenode.name }}-0.{{ .Values.teamname }}" }]
+  }
+]
+}

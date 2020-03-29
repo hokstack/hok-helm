@@ -1,0 +1,17 @@
+{{- if .Values.postgres.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    team.name: {{ .Values.teamname }}
+  labels:
+    app: {{ .Values.postgres.name }}
+  name: {{ .Values.postgres.name }}-0
+spec:
+  ports:
+  - name: "{{ .Values.postgres.name }}"
+    port: 5432
+    targetPort: 5432
+  selector:
+    app: {{ .Values.postgres.name }}
+{{- end }}

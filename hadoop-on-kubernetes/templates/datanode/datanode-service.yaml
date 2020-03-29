@@ -1,0 +1,128 @@
+{{- if .Values.datanode.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    team.name: {{ .Values.teamname }}
+  labels:
+    app: {{ .Values.datanode.name }}
+  name: {{ .Values.datanode.name }}-0
+spec:
+  ports:
+  - name: "8020"
+    port: 8020
+    targetPort: 8020
+  - name: "9000"
+    port: 9000
+    targetPort: 9000
+  - name: "50090"
+    port: 50090
+    targetPort: 50090
+  - name: "50070"
+    port: 50070
+    targetPort: 50070
+  - name: "8088"
+    port: 8088
+    targetPort: 8088
+  - name: "8050"
+    port: 8050
+    targetPort: 8050
+  - name: "8025"
+    port: 8025
+    targetPort: 8025
+  - name: "8030"
+    port: 8030
+    targetPort: 8030
+  - name: "8141"
+    port: 8141
+    targetPort: 8141
+  - name: "45454"
+    port: 45454
+    targetPort: 45454
+  - name: "10200"
+    port: 10200
+    targetPort: 10200
+  - name: "8188"
+    port: 8188
+    targetPort: 8188
+  - name: "8190"
+    port: 8190
+    targetPort: 8190
+  - name: "19888"
+    port: 19888
+    targetPort: 19888
+  - name: "10000"
+    port: 10000
+    targetPort: 10000
+  - name: "9999"
+    port: 9999
+    targetPort: 9999
+  - name: "9933"
+    port: 9933
+    targetPort: 9933
+  - name: "10015"
+    port: 10015
+    targetPort: 10015
+  - name: "16000"
+    port: 16000
+    targetPort: 16000
+  - name: "16010"
+    port: 16010
+    targetPort: 16010
+  - name: "8000"
+    port: 8000
+    targetPort: 8000
+  - name: "8744"
+    port: 8744
+    targetPort: 8744
+  - name: "11000"
+    port: 11000
+    targetPort: 11000
+  - name: "11443"
+    port: 11443
+    targetPort: 11443
+  - name: "8443"
+    port: 8443
+    targetPort: 8443
+  - name: "3000"
+    port: 3000
+    targetPort: 3000
+  - name: "9995"
+    port: 9995
+    targetPort: 9995
+  - name: "88"
+    port: 88
+    targetPort: 88
+  - name: "2181"
+    port: 2181
+    targetPort: 2181
+  - name: "50010"
+    port: 50010
+    targetPort: 50010
+  - name: "50075"
+    port: 50075
+    targetPort: 50075
+  - name: "6667"
+    port: 6667
+    targetPort: 6667
+  - name: "8042"
+    port: 8042
+    targetPort: 8042
+  - name: "3888"
+    port: 3888
+    targetPort: 3888
+  - name: "2888"
+    port: 2888
+    targetPort: 2888
+  - name: "34417"
+    port: 34417
+    targetPort: 34417
+  - name: "46571"
+    port: 46571
+    targetPort: 46571
+  - name: "22"
+    port: 22
+    targetPort: 22
+  selector:
+    app: {{ .Values.datanode.name }}
+{{- end }}

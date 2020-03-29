@@ -1,0 +1,15 @@
+{{- if .Values.kdc.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kdc-pvc
+  labels:
+    app: kdc-node
+spec:
+  storageClassName: {{ .Values.kdc.persistentVolume.storageClassName }}
+  accessModes:
+  - {{ .Values.kdc.persistentVolume.accessModes }}
+  resources:
+    requests:
+      storage: 10Gi
+{{- end }}

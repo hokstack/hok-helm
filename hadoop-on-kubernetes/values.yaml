@@ -1,0 +1,206 @@
+# Default values for hadoop-k8s.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+teamname: shubh-demo1
+
+postgres:
+  enabled: true
+
+  name: postgres
+  
+  replicaCount: 1
+
+  image:
+    repository: index.docker.io/rohitrsh/postgresql
+  
+  securityContext:
+    runAsUser: 0
+    capabilities:
+      add: ["SYS_ADMIN"]
+
+  lifecycle:
+      postStart:
+        exec:
+          command: ["/postgres-pre.sh"] 
+
+  persistentVolume:
+    enabled: true
+  
+    mountPath: /var/lib/pgsql
+    
+    storageClassName: gp2
+    accessModes: ReadWriteOnce
+    
+    storage: 10Gi
+
+
+
+ambariserver:
+  enabled: true
+
+  name: ambariserver
+  
+  componentName: ambari
+
+  image:
+    repository: index.docker.io/rohitrsh/hdp
+  
+  securityContext:
+    runAsUser: 0
+    capabilities:
+      add: ["SYS_ADMIN"]
+
+  containerCmd: ["/scripts/ambari-start.sh"]
+
+  lifecycle:
+      postStart:
+        exec:
+          command: ["/scripts/ambari-pre.sh"]
+
+  persistentVolume:
+    enabled: true
+      
+    storageClassName: gp2
+    accessModes: ReadWriteOnce
+    
+    storage: 1Gi
+
+
+
+masternode:
+  enabled: true
+
+  name: masternode
+
+  componentName: master
+
+  image:
+    repository: index.docker.io/rohitrsh/hdp
+  
+  securityContext:
+    runAsUser: 0
+    capabilities:
+      add: ["ALL"]
+
+  containerCmd: ["/scripts/master-start.sh"]
+
+  lifecycle:
+      postStart:
+        exec:
+          command: ["/scripts/master-pre.sh"] 
+
+  persistentVolume:
+    enabled: true
+  
+    mountPath: /hadoop
+    
+    storageClassName: gp2
+    accessModes: ReadWriteOnce
+    
+    storage: 10Gi
+
+datanode:
+  enabled: true
+
+  name: datanode
+
+  componentName: data
+
+  image:
+    repository: index.docker.io/rohitrsh/hdp
+  
+  securityContext:
+    runAsUser: 0
+    capabilities:
+      add: ["ALL"]
+
+  containerCmd: ["/scripts/data-start.sh"]
+
+  lifecycle:
+      postStart:
+        exec:
+          command: ["/scripts/data-pre.sh"] 
+
+  persistentVolume:
+    enabled: true
+  
+    mountPath: /hadoop
+    
+    storageClassName: gp2
+    accessModes: ReadWriteOnce
+    
+    storage: 10Gi
+
+edgenode:
+  enabled: true
+
+  name: edgenode
+
+  componentName: edge
+
+  image:
+    repository: index.docker.io/rohitrsh/hdp
+  
+  securityContext:
+    runAsUser: 0
+    capabilities:
+      add: ["ALL"]
+
+  containerCmd: ["/scripts/edge-start.sh"]
+
+  lifecycle:
+      postStart:
+        exec:
+          command: ["/scripts/edge-pre.sh"] 
+
+  persistentVolume:
+    enabled: true
+    mountPath: /hadoop
+    storageClassName: gp2
+    accessModes: ReadWriteOnce
+    storage: 10Gi
+
+
+
+metacontroller:
+  enabled: true
+  name: metacontroller
+  image:
+    repository: metacontroller/metacontroller
+    tag: v0.4.0
+
+  rbac:
+    create: true
+
+  serviceAccount:
+    create: true
+
+  crds:
+    create: true
+
+
+
+danteproxy:
+  enabled: true
+  name: danteproxy
+
+  image:
+    repository: index.docker.io/rohitrsh/dante-proxy
+
+
+
+kdc:
+  enabled: true
+  name: kdcserver
+  componentName: kdc
+  realmName: DEMO.COM
+
+  image:
+    repository: index.docker.io/rohitrsh/kdc
+
+  persistentVolume:
+    enabled: true
+    storageClassName: gp2
+    accessModes: ReadWriteOnce
+    storage: 10Gi

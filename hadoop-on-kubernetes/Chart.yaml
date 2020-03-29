@@ -1,0 +1,13 @@
+apiVersion: v1
+appVersion: "2.6.0"
+description: A Helm chart for Hadoop
+name: hadoop-on-kubernetes
+version: 1.0.0
+icon: https://i.imgur.com/PLPqVBj.png
+home: https://hadoop-on-kubernetes.github.io/
+type: application
+maintainers:
+  - name: Rohit Sharma
+    email: rohitrsh@gmail.com
+sources:
+  - https://github.com/hadoop-on-kubernetes/hok-helm

@@ -1,0 +1,81 @@
+{{- if .Values.metacontroller.enabled }}
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: DecoratorController
+metadata:
+  name: service-per-pod-{{ .Values.teamname }}
+spec:
+  resources:
+  - apiVersion: apps/v1beta1
+    resource: statefulsets
+    annotationSelector:
+      matchExpressions:
+      - {key: service-per-pod-label-{{ .Values.teamname }}, operator: Exists}
+      - {key: service-per-pod-ports-{{ .Values.teamname }}, operator: Exists}
+  attachments:
+  - apiVersion: v1
+    resource: services
+  hooks:
+    sync:
+      webhook:
+        url: http://service-per-pod.{{ .Values.teamname }}/sync-service-per-pod
+    finalize:
+      webhook:
+        url: http://service-per-pod.{{ .Values.teamname }}/finalize-service-per-pod
+---
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: DecoratorController
+metadata:
+  name: pod-name-label-{{ .Values.teamname }}
+spec:
+  resources:
+  - apiVersion: v1
+    resource: pods
+    labelSelector:
+      matchExpressions:
+      - {key: pod-name-{{ .Values.teamname }}, operator: DoesNotExist}
+    annotationSelector:
+      matchExpressions:
+      - {key: pod-name-label-{{ .Values.teamname }}, operator: Exists}
+  hooks:
+    sync:
+      webhook:
+        url: http://service-per-pod.{{ .Values.teamname }}/sync-pod-name-label
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: service-per-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-per-pod
+  template:
+    metadata:
+      labels:
+        app: service-per-pod
+    spec:
+      containers:
+      - name: hooks
+        image: metacontroller/jsonnetd:0.1
+        imagePullPolicy: IfNotPresent
+        workingDir: /hooks
+        volumeMounts:
+        - name: hooks
+          mountPath: /hooks
+      volumes:
+      - name: hooks
+        configMap:
+          name: service-per-pod-hooks
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-per-pod
+spec:
+  selector:
+    app: service-per-pod
+  ports:
+  - port: 80
+    targetPort: 8080
+{{- end }}

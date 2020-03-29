@@ -1,0 +1,8 @@
+{{- if .Values.datanode.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.datanode.componentName }}-ssh-config
+data:
+{{ (.Files.Glob "files/datanode/data-ssh-config.sh").AsConfig | indent 4 }}
+{{- end }}

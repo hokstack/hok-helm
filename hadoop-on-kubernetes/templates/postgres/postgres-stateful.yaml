@@ -1,0 +1,88 @@
+{{- if .Values.postgres.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    team.name: {{ .Values.teamname }}
+  labels:
+    app: {{ .Values.postgres.name }}
+  name: {{ .Values.postgres.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.postgres.name }}
+  serviceName: {{ .Values.postgres.name }}-0
+  replicas: {{ .Values.postgres.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.postgres.name }}
+        comp: hdp
+    spec:
+      containers:
+      - image: {{ .Values.postgres.image.repository }}
+        command: ["/postgres-start.sh"]
+        securityContext:
+          runAsUser: {{.Values.postgres.securityContext.runAsUser}}
+          capabilities:
+            add: ["SYS_ADMIN"]
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/postgres-pre.sh"]
+        name: {{ .Values.postgres.name }}
+        volumeMounts:
+          - name: {{ .Values.postgres.name }}-pvc
+            mountPath: /var/lib/pgsql
+          - name: 100-db-create
+            mountPath: /100-db-create.sh
+            subPath: 100-db-create.sh
+          - name: {{ .Values.postgres.name }}-pre
+            mountPath: /postgres-pre.sh
+            subPath: {{ .Values.postgres.name }}-pre.sh
+          - name: {{ .Values.postgres.name }}-start
+            mountPath: /postgres-start.sh
+            subPath: {{ .Values.postgres.name }}-start.sh
+        env:
+        - name: HIVEDB
+          value: "metastore"
+        - name: HIVEUSER
+          value: "hiveuser"
+        - name: OOZIEDB
+          value: "oozie"
+        - name: OOZIEUSER
+          value: "oozieuser"
+        - name: PODIP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: PODNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+          volumeMounts:
+      hostname: {{ .Values.postgres.name }}-0
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: nexus-reg-secret
+      volumes:
+        - name: {{ .Values.postgres.name }}-pvc
+          persistentVolumeClaim:
+            claimName: {{ .Values.postgres.name }}-pvc
+        - name: 100-db-create
+          configMap:
+            name: 100-db-create
+            defaultMode: 0744
+        - name: {{ .Values.postgres.name }}-pre
+          configMap:
+            name: {{ .Values.postgres.name }}-pre
+            defaultMode: 0744
+        - name: {{ .Values.postgres.name }}-start
+          configMap:
+            name: {{ .Values.postgres.name }}-start
+            defaultMode: 0744
+{{- end }}

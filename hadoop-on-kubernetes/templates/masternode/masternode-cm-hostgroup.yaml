@@ -1,0 +1,9 @@
+{{- if .Values.masternode.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.masternode.name }}-hostgroup
+data:
+  masternode-hostgroup.json: |
+{{ .Files.Get "files/masternode/masternode-hostgroup.json" | indent 4}}
+{{- end }}

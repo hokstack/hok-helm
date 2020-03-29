@@ -1,0 +1,4 @@
+{
+    "blueprint" : "hdfs",
+    "host_group" : "host_group_1"
+}

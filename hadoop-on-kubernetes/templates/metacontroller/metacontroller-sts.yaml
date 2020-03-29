@@ -1,0 +1,30 @@
+{{- if .Values.metacontroller.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ .Values.teamname }}-metacontroller
+  name: metacontroller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.teamname }}-metacontroller
+  serviceName: ""
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Values.teamname }}-metacontroller
+    spec:
+      serviceAccountName: {{ .Values.teamname }}-metacontroller
+      containers:
+      - name: metacontroller
+        image: metacontroller/metacontroller:v0.4.0
+        imagePullPolicy: IfNotPresent
+        command: ["/usr/bin/metacontroller"]
+        args:
+        - --logtostderr
+        - -v=4
+        - --discovery-interval=20s
+  volumeClaimTemplates: []
+{{- end }}

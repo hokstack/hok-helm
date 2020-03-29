@@ -1,0 +1,9 @@
+{{- if .Values.datanode.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.datanode.componentName }}-init
+data:
+  data-init.sh: |
+{{ .Files.Get "files/datanode/data-init.sh" | indent 4}}
+{{- end }}

@@ -1,0 +1,108 @@
+{{- if .Values.kdc.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    team.name: {{ .Values.teamname }}
+  labels:
+    app: kdcserver
+  name: kdcserver
+spec:
+  selector:
+    matchLabels:
+      app: kdcserver
+  serviceName: kdcserver-0
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kdcserver
+        comp: misc
+    spec:
+      hostname: kdcserver-0
+      containers:
+        - name: kdcserver
+          image: {{ .Values.kdc.image.repository }}
+          imagePullPolicy: IfNotPresent
+          command: ["/kdc-start.sh"]
+          securityContext:
+            runAsUser: 0
+            capabilities:
+              add: ["SYS_ADMIN"]
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/kdc-pre.sh"]
+          ports:
+          - containerPort: 88
+          - containerPort: 749
+          env:
+          - name: REALM
+            value: "DEMO.COM"
+          - name: PODIP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: PODNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          volumeMounts:
+          - name: kdc-pre
+            mountPath: /kdc-pre.sh
+            subPath: kdc-pre.sh
+          - name: kdc-start
+            mountPath: /kdc-start.sh
+            subPath: kdc-start.sh
+          - name: kdc-conf
+            mountPath: /etc/kdc.conf
+            subPath: kdc.conf
+          - name: kdc-conf-var
+            mountPath: /var/kerberos/krb5kdc/kdc.conf
+            subPath: kdc.conf
+          - name: krb5-conf
+            mountPath: /etc/krb5.conf
+            subPath: krb5.conf
+          - name: krb5-conf-var
+            mountPath: /var/kerberos/krb5kdc/krb5.conf
+            subPath: krb5.conf
+          - name: kadm5-acl
+            mountPath: /var/kerberos/krb5kdc/kadm5.acl
+            subPath: kadm5.acl
+          - name: kdc-pvc
+            mountPath: /var/kerberos/krb5kdc
+      imagePullSecrets:
+      - name: nexus-reg-secret
+      volumes:
+      - name: kdc-pre
+        configMap:
+          name: kdc-pre
+          defaultMode: 0744
+      - name: kdc-start
+        configMap:
+          name: kdc-start
+          defaultMode: 0744
+      - name: kdc-conf
+        configMap:
+          name: kdc-conf
+          defaultMode: 0744
+      - name: kdc-conf-var
+        configMap:
+          name: kdc-conf
+          defaultMode: 0744
+      - name: krb5-conf
+        configMap:
+          name: krb5-conf
+          defaultMode: 0744
+      - name: krb5-conf-var
+        configMap:
+          name: krb5-conf
+          defaultMode: 0744
+      - name: kadm5-acl
+        configMap:
+          name: kadm5-acl
+          defaultMode: 0744
+      - name: kdc-pvc
+        persistentVolumeClaim:
+          claimName: kdc-pvc
+{{- end }}

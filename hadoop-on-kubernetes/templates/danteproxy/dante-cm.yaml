@@ -1,0 +1,9 @@
+{{- if .Values.danteproxy.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sockd-conf
+data:
+  sockd.conf: |
+{{ .Files.Get "files/danteproxy/sockd.conf" | indent 4}}
+{{- end }}

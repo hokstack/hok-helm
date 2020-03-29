@@ -1,0 +1,37 @@
+{{- if .Values.ambariserver.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    team.name: {{ .Values.teamname }}
+  labels:
+    app: {{ .Values.ambariserver.name }}
+    comp: hdp
+  name: {{ .Values.ambariserver.name }}-0
+spec:
+  type: NodePort
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+  - name: "6080"
+    port: 6080
+    targetPort: 6080
+  - name: "6182"
+    port: 6182
+    targetPort: 6182
+  - name: "6083"
+    port: 6083
+    targetPort: 6083
+  - name: "6183"
+    port: 6183
+    targetPort: 6183
+  - name: "8440"
+    port: 8440
+    targetPort: 8440
+  - name: "8441"
+    port: 8441
+    targetPort: 8441
+  selector:
+    app: {{ .Values.ambariserver.name }}
+{{- end }}

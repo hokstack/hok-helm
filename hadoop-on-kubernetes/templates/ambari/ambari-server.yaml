@@ -1,0 +1,119 @@
+{{- if .Values.ambariserver.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    team.name: {{ .Values.teamname }}
+  name: {{ .Values.ambariserver.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.ambariserver.name }}
+  serviceName: {{ .Values.ambariserver.name }}-0
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.ambariserver.name }}
+        comp: hdp
+    spec:
+      hostname: {{ .Values.ambariserver.name }}-0
+      initContainers:
+        - name: {{ .Values.ambariserver.componentName }}-init
+          image: {{ .Values.ambariserver.image.repository }}
+          imagePullPolicy: IfNotPresent
+          command: ["/scripts/ambari-init.sh"]
+          securityContext:
+            runAsUser: 0
+            capabilities:
+              add: ["SYS_ADMIN"]
+          volumeMounts:
+          - name: {{ .Values.ambariserver.componentName }}-init
+            mountPath: /scripts/{{ .Values.ambariserver.componentName }}-init.sh
+            subPath: {{ .Values.ambariserver.componentName }}-init.sh
+      containers:
+        - name: {{ .Values.ambariserver.name }}
+          image: {{ .Values.ambariserver.image.repository }}
+          imagePullPolicy: IfNotPresent
+          command: {{ .Values.ambariserver.containerCmd}}
+          securityContext:
+            runAsUser: {{.Values.ambariserver.securityContext.runAsUser}}
+            capabilities:
+              add: {{.Values.ambariserver.securityContext.capabilities.add}}
+          lifecycle:
+            postStart:
+              exec:
+                command: {{.Values.ambariserver.lifecycle.postStart.exec.command}}
+          ports:
+          - containerPort: 8080
+          - containerPort: 6080
+          - containerPort: 6182
+          - containerPort: 6083
+          - containerPort: 6183
+          env:
+          - name: DBHOST
+            value: postgres-0
+          - name: PODIP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: PODNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          volumeMounts:
+          - name: {{ .Values.ambariserver.componentName }}-init
+            mountPath: /scripts/{{ .Values.ambariserver.componentName }}-init.sh
+            subPath: {{ .Values.ambariserver.componentName }}-init.sh
+          - name: {{ .Values.ambariserver.componentName }}-start
+            mountPath: /scripts/{{ .Values.ambariserver.componentName }}-start.sh
+            subPath: {{ .Values.ambariserver.componentName }}-start.sh
+          - name: {{ .Values.ambariserver.componentName }}-pre
+            mountPath: /scripts/{{ .Values.ambariserver.componentName }}-pre.sh
+            subPath: {{ .Values.ambariserver.componentName }}-pre.sh
+          - name: {{ .Values.ambariserver.componentName }}-blueprint-hdfsyarn
+            mountPath: /scripts/hdfsyarn.json
+            subPath: hdfsyarn.json
+          - name: {{ .Values.ambariserver.componentName }}-hostgroup-hdfs
+            mountPath: /scripts/hdfs.json
+            subPath: hdfs.json
+          - name: {{ .Values.ambariserver.componentName }}-krb5-conf
+            mountPath: /etc/krb5.conf
+            subPath: krb5.conf
+          - name: ambari-keytab-pvc
+            mountPath: /etc/security/keytabs
+      # imagePullSecrets:
+      # - name: myregistrykey 
+      volumes:
+      - name: {{ .Values.ambariserver.componentName }}-init
+        configMap:
+          name: {{ .Values.ambariserver.componentName }}-init
+          defaultMode: 0744
+      - name: {{ .Values.ambariserver.componentName }}-start
+        configMap:
+          name: {{ .Values.ambariserver.componentName }}-start
+          defaultMode: 0744
+      - name: {{ .Values.ambariserver.componentName }}-pre
+        configMap:
+          name: {{ .Values.ambariserver.componentName }}-pre
+          defaultMode: 0744
+      - name: {{ .Values.ambariserver.componentName }}-blueprint-hdfsyarn
+        configMap:
+          name: {{ .Values.ambariserver.componentName }}-blueprint-hdfsyarn
+          defaultMode: 0744
+      - name: {{ .Values.ambariserver.componentName }}-hostgroup-hdfs
+        configMap:
+          name: {{ .Values.ambariserver.componentName }}-hostgroup-hdfs
+          defaultMode: 0744
+      - name: {{ .Values.ambariserver.componentName }}-krb5-conf
+        configMap:
+          name: {{ .Values.ambariserver.componentName }}-krb5-conf
+          defaultMode: 0744
+      - name: {{ .Values.ambariserver.componentName }}-keytab-pvc
+        persistentVolumeClaim:
+          claimName: {{ .Values.ambariserver.componentName }}-keytab-pvc
+{{- end }}

@@ -1,0 +1,22 @@
+{{- if .Values.kdc.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    team.name: {{ .Values.teamname }}
+  labels:
+    app: kdcserver
+  name: kdcserver-0
+spec:
+  type: NodePort
+  ports:
+  - name: "88"
+    port: 88
+#    protocol: TCP/UDP
+    targetPort: 88
+  - name: "749"
+    port: 749
+    targetPort: 749
+  selector:
+    app: kdcserver
+{{- end }}
