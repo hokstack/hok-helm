@@ -1,0 +1,9 @@
+{{- if .Values.ambariserver.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ambari-init
+data:
+  ambari-init.sh: |
+{{ .Files.Get "files/ambari/ambari-init.sh" | indent 4}}
+{{- end }}

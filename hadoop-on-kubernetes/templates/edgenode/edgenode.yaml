@@ -1,0 +1,156 @@
+{{- if .Values.edgenode.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    team.name: {{ .Values.teamname }}
+  labels:
+    app: {{ .Values.edgenode.name }}
+  name: {{ .Values.edgenode.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.edgenode.name }}
+  serviceName: {{ .Values.edgenode.name }}-0
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.edgenode.name }}
+        comp: hdp
+    spec:
+      hostname: {{ .Values.edgenode.name }}-0
+      initContainers:
+        - name: {{ .Values.edgenode.componentName }}-init
+          image: {{ .Values.edgenode.image.repository }}
+          imagePullPolicy: IfNotPresent
+          command: ["/scripts/edge-init.sh"]
+          securityContext:
+            runAsUser: 0
+            capabilities:
+              add: ["SYS_ADMIN"]
+          volumeMounts:
+          - name: {{ .Values.edgenode.componentName }}-init
+            mountPath: /scripts/{{ .Values.edgenode.componentName }}-init.sh
+            subPath: {{ .Values.edgenode.componentName }}-init.sh
+      containers:
+        - name: {{ .Values.edgenode.name }}
+          image: {{ .Values.edgenode.image.repository }}
+          imagePullPolicy: IfNotPresent
+          command: {{ .Values.edgenode.containerCmd}}
+          securityContext:
+            runAsUser: {{.Values.edgenode.securityContext.runAsUser}}
+            capabilities:
+              add: {{.Values.edgenode.securityContext.capabilities.add}}
+          lifecycle:
+            postStart:
+              exec:
+                command: {{.Values.edgenode.lifecycle.postStart.exec.command}}
+          ports:
+          - containerPort: 6083
+          - containerPort: 6183
+          - containerPort: 8020
+          - containerPort: 9000
+          - containerPort: 50090
+          - containerPort: 50070
+          - containerPort: 8088
+          - containerPort: 8050
+          - containerPort: 8025
+          - containerPort: 8030
+          - containerPort: 8141
+          - containerPort: 45454
+          - containerPort: 10200
+          - containerPort: 8188
+          - containerPort: 8190
+          - containerPort: 19888
+          - containerPort: 10000
+          - containerPort: 9999
+          - containerPort: 9933
+          - containerPort: 10015
+          - containerPort: 16000
+          - containerPort: 16010
+          - containerPort: 8000
+          - containerPort: 8744
+          - containerPort: 11000
+          - containerPort: 11443
+          - containerPort: 8443
+          - containerPort: 3000
+          - containerPort: 9995
+          - containerPort: 88
+          - containerPort: 2181
+          env:
+          - name: DBHOST
+            value: "postgres-db"
+          - name: AMBARISERVER
+            value: "ambariserver-0"
+          - name: MASTERNODE
+            value: "edgenode"
+          - name: PODIP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: PODNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          volumeMounts:
+          - name: {{ .Values.edgenode.componentName }}-init
+            mountPath: /scripts/{{ .Values.edgenode.componentName }}-init.sh
+            subPath: {{ .Values.edgenode.componentName }}-init.sh
+          - name: {{ .Values.edgenode.componentName }}-start
+            mountPath: /scripts/{{ .Values.edgenode.componentName }}-start.sh
+            subPath: {{ .Values.edgenode.componentName }}-start.sh
+          - name: {{ .Values.edgenode.componentName }}-pre
+            mountPath: /scripts/{{ .Values.edgenode.componentName }}-pre.sh
+            subPath: {{ .Values.edgenode.componentName }}-pre.sh
+          - name: {{ .Values.edgenode.componentName }}-ssh-config
+            mountPath: /scripts/{{ .Values.edgenode.componentName }}-ssh-config.sh
+            subPath: {{ .Values.edgenode.componentName }}-ssh-config.sh
+          - name: {{ .Values.edgenode.name }}-hostgroup
+            mountPath: /scripts/{{ .Values.edgenode.name }}-hostgroup.json
+            subPath: {{ .Values.edgenode.name }}-hostgroup.json
+          - name: {{ .Values.edgenode.componentName }}-krb5-conf
+            mountPath: /etc/krb5.conf
+            subPath: krb5.conf
+          - name: {{ .Values.edgenode.componentName }}-pvc
+            mountPath: /home
+          - name: {{ .Values.edgenode.componentName }}-keytab-pvc
+            mountPath: /etc/security/keytabs
+      # imagePullSecrets:
+      # - name: myregistrykey
+      volumes:
+      - name: {{ .Values.edgenode.componentName }}-init
+        configMap:
+          name: {{ .Values.edgenode.componentName }}-init
+          defaultMode: 0744
+      - name: {{ .Values.edgenode.componentName }}-start
+        configMap:
+          name: {{ .Values.edgenode.componentName }}-start
+          defaultMode: 0744
+      - name: {{ .Values.edgenode.componentName }}-pre
+        configMap:
+          name: {{ .Values.edgenode.componentName }}-pre
+          defaultMode: 0744
+      - name: {{ .Values.edgenode.componentName }}-ssh-config
+        configMap:
+          name: {{ .Values.edgenode.componentName }}-ssh-config
+          defaultMode: 0744
+      - name: {{ .Values.edgenode.name }}-hostgroup
+        configMap:
+          name: {{ .Values.edgenode.name }}-hostgroup
+          defaultMode: 0744
+      - name: {{ .Values.edgenode.componentName }}-krb5-conf
+        configMap:
+          name: {{ .Values.edgenode.componentName }}-krb5-conf
+          defaultMode: 0744
+      - name: {{ .Values.edgenode.componentName }}-pvc
+        persistentVolumeClaim:
+          claimName: {{ .Values.edgenode.componentName }}-pvc
+      - name: {{ .Values.edgenode.componentName }}-keytab-pvc
+        persistentVolumeClaim:
+          claimName: {{ .Values.edgenode.componentName }}-keytab-pvc
+{{- end }}

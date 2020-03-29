@@ -1,0 +1,8 @@
+{{- if .Values.kdc.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kdc-conf
+data:
+{{ (tpl (.Files.Glob "files/kdc/kdc.conf").AsConfig . ) | indent 4 }}
+{{- end }}

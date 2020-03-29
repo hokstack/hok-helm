@@ -1,0 +1,2 @@
+Congratulations! you have deployed HDP on containers :)
+Follow the README post install instruction to access the cluster.

@@ -1,0 +1,122 @@
+{
+    "Blueprints": {
+         "blueprint_name": "hdfs",
+         "stack_name": "HDP",
+         "stack_version": "2.6"
+    },
+    "settings": [
+      {
+        "recovery_settings": [
+          {
+            "recovery_enabled": "true"
+          }
+        ]
+      },
+      {
+        "service_settings": []
+      },
+      {
+        "component_settings": []
+      }
+    ],
+    "configurations": [
+        {
+          "hdfs-site": {
+            "properties_attributes" : { },
+            "properties" : {
+              "dfs.namenode.datanode.registration.ip-hostname-check" : "false",
+              "dfs.replication" : "1"
+            }
+          }
+        },
+        {
+            "hive-site": {
+              "properties_attributes" : { },
+              "properties" : {
+                "javax.jdo.option.ConnectionURL" : "jdbc:postgresql://postgres-0/metastore",
+                "javax.jdo.option.ConnectionDriverName" : "org.postgresql.Driver",
+                "javax.jdo.option.ConnectionUserName" : "hiveuser",
+                "javax.jdo.option.ConnectionPassword" : "123456789",
+                "datanucleus.autoCreateSchema" : "false",
+                "hive.metastore.uris" : "thrift://masternode-0.{{ .Values.teamname }}:9083",
+                "hive.execution.engine" : "mr"
+              }
+            }
+          },
+          {
+            "oozie-site": {
+              "properties_attributes" : { },
+              "properties" : {
+                "javax.jdo.option.ConnectionURL" : "jdbc:postgresql://postgres-0/oozie",
+                "javax.jdo.option.ConnectionDriverName" : "org.postgresql.Driver",
+                "javax.jdo.option.ConnectionUserName" : "oozieuser",
+                "javax.jdo.option.ConnectionPassword" : "123456789"
+              }
+            }
+          },
+          {
+            "hive-env": {
+              "properties_attributes" : { },
+              "properties" : {
+                "hive_database" : "Existing PostgresSQL Database",
+                "hive_database_type" : "postgres",
+                "hive_database_name" : "metastore"
+              }
+            }
+          },
+          {
+            "oozie-env": {
+              "properties_attributes" : { },
+              "properties" : {
+                "oozie_database" : "Existing PostgresSQL Database",
+                "oozie_database_type" : "postgres",
+                "oozie_database_name" : "oozie"
+              }
+            }
+          }
+    ],
+    "host_groups": [{
+    "name": "host_group_2",
+    "components": [
+    {"name": "NAMENODE"},
+    {"name": "SECONDARY_NAMENODE"},
+    {"name": "RESOURCEMANAGER"},
+    {"name": "HISTORYSERVER"},
+    {"name": "SPARK2_JOBHISTORYSERVER"},
+    {"name": "SPARK_JOBHISTORYSERVER"},
+    {"name": "APP_TIMELINE_SERVER"},
+    {"name": "YARN_CLIENT"},
+    {"name": "MAPREDUCE2_CLIENT"},
+    {"name": "SPARK2_CLIENT"},
+    {"name": "SPARK_CLIENT"},
+    {"name": "ZOOKEEPER_CLIENT"},
+    {"name": "HIVE_SERVER"},
+    {"name": "HIVE_CLIENT"},
+    {"name": "WEBHCAT_SERVER"},
+    {"name": "OOZIE_SERVER"},
+    {"name": "OOZIE_CLIENT"},
+    {"name": "TEZ_CLIENT"},
+    {"name": "ZOOKEEPER_SERVER"},
+    {"name": "KAFKA_BROKER"},
+    {"name": "HDFS_CLIENT"
+    }]},
+    {"name": "host_group_3",
+    "components": [
+    {"name": "YARN_CLIENT"},
+    {"name": "MAPREDUCE2_CLIENT"},
+    {"name": "SPARK2_CLIENT"},
+    {"name": "SPARK_CLIENT"},
+    {"name": "ZOOKEEPER_CLIENT"},
+    {"name": "HIVE_CLIENT"},
+    {"name": "OOZIE_CLIENT"},
+    {"name": "TEZ_CLIENT"},
+    {"name": "KAFKA_BROKER"},
+    {"name": "HDFS_CLIENT"
+    }]},
+    {"name": "host_group_1",
+    "components": [
+    {"name": "DATANODE"},
+    {"name": "NODEMANAGER"}
+    ]}
+    ]
+  }

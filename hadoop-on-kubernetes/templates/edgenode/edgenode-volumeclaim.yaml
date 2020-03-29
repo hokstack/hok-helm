@@ -1,0 +1,17 @@
+{{- if .Values.edgenode.enabled }}
+{{- if and .Values.edgenode.enabled .Values.edgenode.persistentVolume.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: edge-pvc
+  labels:
+    app: edge-node
+spec:
+  storageClassName: {{ .Values.edgenode.persistentVolume.storageClassName }}
+  accessModes:
+  - {{ .Values.edgenode.persistentVolume.accessModes }}
+  resources:
+    requests:
+      storage: 10Gi
+{{- end }}
+{{- end }}

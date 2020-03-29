@@ -1,0 +1,156 @@
+{{- if .Values.masternode.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    team.name: {{ .Values.teamname }}
+  labels:
+  name: {{ .Values.masternode.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.masternode.name }}
+  serviceName: {{ .Values.masternode.name }}-0
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.masternode.name }}
+        comp: hdp
+    spec:
+      hostname: {{ .Values.masternode.name }}-0
+      initContainers:
+        - name: {{ .Values.masternode.componentName }}-init
+          image: {{ .Values.masternode.image.repository }}
+          imagePullPolicy: IfNotPresent
+          command: ["/scripts/master-init.sh"]
+          securityContext:
+            runAsUser: 0
+            capabilities:
+              add: ["SYS_ADMIN"]
+          volumeMounts:
+          - name: {{ .Values.masternode.componentName }}-init
+            mountPath: /scripts/{{ .Values.masternode.componentName }}-init.sh
+            subPath: {{ .Values.masternode.componentName }}-init.sh
+      containers:
+        - name: {{ .Values.masternode.name }}
+          image: {{ .Values.masternode.image.repository }}
+          imagePullPolicy: IfNotPresent
+          command: {{ .Values.masternode.containerCmd}}
+          securityContext:
+            runAsUser: {{.Values.masternode.securityContext.runAsUser}}
+            capabilities:
+              add: {{.Values.masternode.securityContext.capabilities.add}}
+          lifecycle:
+            postStart:
+              exec:
+                command: {{.Values.masternode.lifecycle.postStart.exec.command}}
+          ports:
+          - containerPort: 6083
+          - containerPort: 6183
+          - containerPort: 8020
+          - containerPort: 9000
+          - containerPort: 50090
+          - containerPort: 50070
+          - containerPort: 8088
+          - containerPort: 8050
+          - containerPort: 8025
+          - containerPort: 8030
+          - containerPort: 8141
+          - containerPort: 45454
+          - containerPort: 10200
+          - containerPort: 8188
+          - containerPort: 8190
+          - containerPort: 19888
+          - containerPort: 10000
+          - containerPort: 9999
+          - containerPort: 9933
+          - containerPort: 10015
+          - containerPort: 16000
+          - containerPort: 16010
+          - containerPort: 8000
+          - containerPort: 8744
+          - containerPort: 11000
+          - containerPort: 11443
+          - containerPort: 8443
+          - containerPort: 3000
+          - containerPort: 9995
+          - containerPort: 88
+          - containerPort: 2181
+          - containerPort: 22
+          env:
+          - name: DBHOST
+            value: "postgres-db"
+          - name: AMBARISERVER
+            value: "ambariserver-0"
+          - name: MASTERNODE
+            value: "masternode"
+          - name: PODIP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: PODNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          volumeMounts:
+          - name: {{ .Values.masternode.componentName }}-init
+            mountPath: /scripts/{{ .Values.masternode.componentName }}-init.sh
+            subPath: {{ .Values.masternode.componentName }}-init.sh
+          - name: {{ .Values.masternode.componentName }}-start
+            mountPath: /scripts/{{ .Values.masternode.componentName }}-start.sh
+            subPath: {{ .Values.masternode.componentName }}-start.sh
+          - name: {{ .Values.masternode.componentName }}-pre
+            mountPath: /scripts/{{ .Values.masternode.componentName }}-pre.sh
+            subPath: {{ .Values.masternode.componentName }}-pre.sh
+          - name: {{ .Values.masternode.componentName }}-ssh-config
+            mountPath: /scripts/master-ssh-config.sh
+            subPath: {{ .Values.masternode.componentName }}-ssh-config.sh
+          - name: {{ .Values.masternode.name }}-hostgroup
+            mountPath: /scripts/{{ .Values.masternode.name }}-hostgroup.json
+            subPath: {{ .Values.masternode.name }}-hostgroup.json
+          - name: {{ .Values.masternode.componentName }}-krb5-conf
+            mountPath: /etc/krb5.conf
+            subPath: krb5.conf
+          - name: {{ .Values.masternode.componentName }}-pvc
+            mountPath: /hadoop
+          - name: {{ .Values.masternode.componentName }}-keytab-pvc
+            mountPath: /etc/security/keytabs
+      # imagePullSecrets:
+      # - name: myregistrykey
+      volumes:
+      - name: {{ .Values.masternode.componentName }}-init
+        configMap:
+          name: {{ .Values.masternode.componentName }}-init
+          defaultMode: 0744
+      - name: {{ .Values.masternode.componentName }}-start
+        configMap:
+          name: {{ .Values.masternode.componentName }}-start
+          defaultMode: 0744
+      - name: {{ .Values.masternode.componentName }}-pre
+        configMap:
+          name: {{ .Values.masternode.componentName }}-pre
+          defaultMode: 0744
+      - name: {{ .Values.masternode.componentName }}-ssh-config
+        configMap:
+          name: {{ .Values.masternode.componentName }}-ssh-config
+          defaultMode: 0744
+      - name: {{ .Values.masternode.name }}-hostgroup
+        configMap:
+          name: {{ .Values.masternode.name }}-hostgroup
+          defaultMode: 0744
+      - name: {{ .Values.masternode.componentName }}-krb5-conf
+        configMap:
+          name: {{ .Values.masternode.componentName }}-krb5-conf
+          defaultMode: 0744
+      - name: {{ .Values.masternode.componentName }}-pvc
+        persistentVolumeClaim:
+          claimName: {{ .Values.masternode.componentName }}-pvc
+      - name: {{ .Values.masternode.componentName }}-keytab-pvc
+        persistentVolumeClaim:
+          claimName: {{ .Values.masternode.componentName }}-keytab-pvc
+{{- end }}

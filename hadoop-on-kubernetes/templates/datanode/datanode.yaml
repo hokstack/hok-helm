@@ -1,0 +1,159 @@
+{{- if .Values.datanode.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    service-per-pod-label-{{ .Values.teamname }}: pod-name
+    service-per-pod-ports-{{ .Values.teamname }}: "50070:50070,50470:50470,50075:50075,50475:50475,50010:50010,50020:50020,50030:50030,16020:16020,16030:16030,45454:45454,8042:8042,8983:8983,6093:6093,6667:6667,9092:9092,2181:2181,2888:2888,3888:3888,34417:34417,4657:4657,22:22"
+    team.name: {{ .Values.teamname }}
+  labels:
+    app: {{ .Values.datanode.name }}
+  name: {{ .Values.datanode.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.datanode.name }}
+  serviceName: {{ .Values.datanode.name }}-0
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.datanode.name }}
+        comp: hdp
+    spec:
+      hostname: {{ .Values.datanode.name }}-0
+      initContainers:
+        - name: {{ .Values.datanode.componentName }}-init
+          image: {{ .Values.ambariserver.image.repository }}
+          imagePullPolicy: IfNotPresent
+          command: ["/scripts/data-init.sh"]
+          securityContext:
+            runAsUser: 0
+            capabilities:
+              add: ["SYS_ADMIN"]
+          volumeMounts:
+          - name: {{ .Values.datanode.componentName }}-init
+            mountPath: /scripts/{{ .Values.datanode.componentName }}-init.sh
+            subPath: {{ .Values.datanode.componentName }}-init.sh
+      containers:
+        - name: {{ .Values.datanode.name }}
+          image: {{ .Values.datanode.image.repository }}
+          imagePullPolicy: IfNotPresent
+          command: {{ .Values.datanode.containerCmd}}
+          securityContext:
+            runAsUser: {{.Values.datanode.securityContext.runAsUser}}
+            capabilities:
+              add: {{.Values.datanode.securityContext.capabilities.add}}
+          lifecycle:
+            postStart:
+              exec:
+                command: {{.Values.datanode.lifecycle.postStart.exec.command}}
+          ports:
+          - containerPort: 2181
+          - containerPort: 50070
+          - containerPort: 50470
+          - containerPort: 50075
+          - containerPort: 50475
+          - containerPort: 50010
+          - containerPort: 50020
+          - containerPort: 50030
+          - containerPort: 16020
+          - containerPort: 16030
+          - containerPort: 45454
+          - containerPort: 8042
+          - containerPort: 8983
+          - containerPort: 6093
+          - containerPort: 6667
+          - containerPort: 9092
+          - containerPort: 2888
+          - containerPort: 3888
+          - containerPort: 34417
+          - containerPort: 46571
+          - containerPort: 22
+          env:
+          - name: DBHOST
+            value: "postgres-db"
+          - name: AMBARISERVER
+            value: "ambariserver-0"
+          - name: DATANODE
+            value: "datanode"
+          - name: PODIP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: PODNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          volumeMounts:
+          - name: {{ .Values.datanode.componentName }}-init
+            mountPath: /scripts/{{ .Values.datanode.componentName }}-init.sh
+            subPath: {{ .Values.datanode.componentName }}-init.sh
+          - name: {{ .Values.datanode.componentName }}-start
+            mountPath: /scripts/{{ .Values.datanode.componentName }}-start.sh
+            subPath: {{ .Values.datanode.componentName }}-start.sh
+          - name: {{ .Values.datanode.componentName }}-pre
+            mountPath: /scripts/{{ .Values.datanode.componentName }}-pre.sh
+            subPath: {{ .Values.datanode.componentName }}-pre.sh
+          - name: {{ .Values.datanode.componentName }}-ssh-config
+            mountPath: /scripts/{{ .Values.datanode.componentName }}-ssh-config.sh
+            subPath: {{ .Values.datanode.componentName }}-ssh-config.sh
+          - name: {{ .Values.datanode.name }}-hostgroup
+            mountPath: /scripts/{{ .Values.datanode.name }}-hostgroup.json
+            subPath: {{ .Values.datanode.name }}-hostgroup.json
+          - name: {{ .Values.datanode.componentName }}-pvc
+            mountPath: /hadoop
+          - name: {{ .Values.datanode.componentName }}-krb5-conf
+            mountPath: /etc/krb5.conf
+            subPath: krb5.conf
+          - name: {{ .Values.datanode.componentName }}-keytab-pvc
+            mountPath: /etc/security/keytabs
+      # imagePullSecrets:
+      # - name: myregistrykey
+      volumes:
+      - name: {{ .Values.datanode.componentName }}-init
+        configMap:
+          name: {{ .Values.datanode.componentName }}-init
+          defaultMode: 0744
+      - name: {{ .Values.datanode.componentName }}-start
+        configMap:
+          name: {{ .Values.datanode.componentName }}-start
+          defaultMode: 0744
+      - name: {{ .Values.datanode.componentName }}-pre
+        configMap:
+          name: {{ .Values.datanode.componentName }}-pre
+          defaultMode: 0744
+      - name: {{ .Values.datanode.componentName }}-ssh-config
+        configMap:
+          name: {{ .Values.datanode.componentName }}-ssh-config
+          defaultMode: 0744
+      - name: {{ .Values.datanode.name }}-hostgroup
+        configMap:
+          name: {{ .Values.datanode.name }}-hostgroup
+      - name: {{ .Values.datanode.componentName }}-krb5-conf
+        configMap:
+          name: {{ .Values.datanode.componentName }}-krb5-conf
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.datanode.componentName }}-pvc
+    spec:
+      accessModes: 
+        - {{ .Values.datanode.persistentVolume.accessModes }}
+      resources:
+        requests:
+          storage: {{ .Values.datanode.persistentVolume.storage }}
+      storageClassName: "{{ .Values.datanode.persistentVolume.storageClassName }}"
+  - metadata:
+      name: {{ .Values.datanode.componentName }}-keytab-pvc
+    spec:
+      accessModes:
+        - {{ .Values.datanode.persistentVolume.accessModes }}
+      resources:
+        requests:
+          storage: {{ .Values.datanode.persistentVolume.storage }}
+      storageClassName: "{{ .Values.datanode.persistentVolume.storageClassName }}"
+{{- end }}

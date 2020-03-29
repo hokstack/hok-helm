@@ -1,0 +1,9 @@
+{{- if .Values.postgres.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: 100-db-create
+data:
+  100-db-create.sh: |
+{{ .Files.Get "files/postgres/100-db-create.sh" | indent 4}}
+{{- end }}

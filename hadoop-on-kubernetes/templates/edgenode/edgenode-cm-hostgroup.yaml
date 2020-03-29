@@ -1,0 +1,9 @@
+{{- if .Values.edgenode.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.edgenode.name }}-hostgroup
+data:
+  edgenode-hostgroup.json: |
+{{ .Files.Get "files/edgenode/edgenode-hostgroup.json" | indent 4}}
+{{- end }}

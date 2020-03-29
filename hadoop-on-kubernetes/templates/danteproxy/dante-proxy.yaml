@@ -1,0 +1,46 @@
+{{- if .Values.danteproxy.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: dante-proxy
+spec:
+  type: NodePort
+  ports:
+  - port: 1080
+    protocol: TCP
+  selector:
+    app: dante-proxy
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dante-proxy
+spec:
+  selector:
+    matchLabels:
+      app: dante-proxy
+  serviceName: dante-proxy
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dante-proxy
+        comp: misc
+    spec:
+      containers:
+      - image: {{ .Values.danteproxy.image.repository }}
+        name: dante-proxy
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 1080
+          name: dante-proxy
+        volumeMounts:
+        - name: sockd-conf
+          mountPath: /etc/sockd.conf
+          subPath: sockd.conf
+      volumes:
+      - name: sockd-conf
+        configMap:
+          name: sockd-conf
+          defaultMode: 0744
+{{- end }}
