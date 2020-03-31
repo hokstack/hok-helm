@@ -5,7 +5,7 @@ HoK is Hadoop on Kubernetes. It deploys Hadoop Stack on kubernets. Using that we
 
 <!-- ![Overview](images/hok-overview.svg) -->
 
-<img src="images/hok-overview.svg" width="300">
+<img src="images/hok-overview.svg" align="center" width="500">
 
 ## Installation
 
