@@ -190,7 +190,7 @@ Kerberose Values
 | `kdc.name`                                        | The name used in various properties                   | `kdcserve`                            |
 | `kdc.componentName`                               | The component name used in various properties         | `kdc`                                 |
 | `kdc.realmName`                                   | The kerberos REALM name                               | `DEMO.COM`                            |
-| `kdc.image.repository`                            | Image repo URL                                        | `index.docker.io/rohitrsh/kdc`        |
+| `kdc.image.repository`                            | Image repo URL                                        | `index.docker.io/rohitrsh/kdc`   |
 | `kdc.persistentVolume.enabled`                    | The PVC enable flag to control volumes                | `true`                                |
 | `kdc.persistentVolume.storageClassName`           | The storage class to be used for PVC                  | `gp2` In the case of EKS              |
 | `kdc.persistentVolume.accessModes`                | PVC access mode                                       | `ReadWriteOnce`                       | 
