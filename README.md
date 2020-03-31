@@ -1,1 +1,205 @@
-# hok-helm
+# HokStack - Haoop On Kubernetes
+
+## What is Hok(Stack)
+HoK is Hadoop on Kubernetes. It deploys Hadoop Stack on kubernets. Using that we can have multiple Hadoop cluster running in the Kubernetes namespaces. It have saveral of benefits
+
+![Overview](images/hok-overview.svg)
+
+
+## Installation
+
+### Helm
+
+This Helm Chart requires Helm 2.
+
+### Platforms
+Depending of the version of the HoKStack, it supports the following platforms:
+
+| Hadoop On Kubernetes Helm Chart version        | Kubernetes | OpenShift Container Platform |
+| ---------------------------------------------- | ---------- | ---------------------------- |
+| v1.0.0                                         | 1.11+      | 3.11+                        |
+| v1.0.0                                         | 1.11+      | 3.11+                        |
+
+
+## Quick Start
+
+The Hok need saperet namespace which can be `team-name` or `value-stream` anything unique.
+It deploys all the Hadoop components in statefulsets.
+To install the HokStack via Helm run the following command:
+
+### Adding Hadoop on Kubernetes repository
+```
+$ helm repo add hok https://raw.githubusercontent.com/hadoop-on-kubernetes/hok-helm/master/repos/stable
+```
+
+## Update procedure
+
+To update simply update your helm repositories and check the latest version
+
+```
+$ helm repo update
+```
+## Repo search
+
+You can then check for the latest version by searching your Helm repositories for the Hadoop on kubernetes
+
+```
+$ helm search hok hadoop-on-kubernetes
+```
+
+## Rollout for first team with default values
+
+You can then check for the latest version by searching your Helm repositories for the Hadoop on kubernetes
+
+```
+$ helm install hok/hadoop-on-kubernetes --name hok-team1 --set teamname=team1 --namespace team1
+```
+
+## Rollout for second team with default values
+
+You can then check for the latest version by searching your Helm repositories for the Hadoop on kubernetes
+
+```
+$ helm install hok/hadoop-on-kubernetes --name hok-team2 --set teamname=team2 --set metacontroller.crds.create=false --namespace team2
+```
+
+## Remove hadoop-on-kubernetes
+
+Remove OneAgent custom resources and clean-up all remaining OneAgent Operator specific objects:
+
+```
+$ helm remove <release name> -n <namespace>
+```
+
+## Component will be installed
+ * HDFS
+ * Mapreduce
+ * Hive
+ * Oozie
+ * Yarn
+ * Spark
+ * Spark2
+ * Tez
+
+
+### Ambari blueprints
+
+`hdfsyarn.json` configuration can be changed by defining environment variables in the following form:
+
+
+## Accessing Cluster UI
+Dante
+
+## Accessing Cluster and submiting Jobs
+Edgenode
+
+## Helm chart Configuration
+
+The following table lists the configurable parameters of the HELM chart and their default values.
+
+Global values
+
+| Parameter                                         | Description                                           | Default                               |
+|---------------------------------------------------|-------------------------------------------------------|---------------------------------------|
+| `teamname`                                        | Team name value to seprate the install                | team1                                 |
+
+PostgreSQL values   
+
+| Parameter                                         | Description                                           | Default                               |
+|---------------------------------------------------|-------------------------------------------------------|---------------------------------------|
+| `postgres.enabled`                                | Flag to enable and disable Postgres SQL install       | `true`                                |
+| `postgres.name`                                   | The name used in various properties                   | `postgres`                            |
+| `postgres.replicaCount`                           | Postgres pod replica count                            | `1`                                   |
+| `postgres.image.repository`                       | Image repo URL `It uses custom postgres image`        | `index.docker.io/rohitrsh/postgresql` |
+| `postgres.persistentVolume.enabled`               | The PVC enable flag to control volumes                | `true`                                |
+| `postgres.storageClassName`                       | The storage class to be used for PVC                  | `gp2` - In the case of EKS            |
+| `postgres.persistentVolume.accessModes`           | PVC access mode                                       | `ReadWriteOnce`                       |
+| `postgres.persistentVolume.storage`               | The storage size to be allocated to pod               | `10Gi`                                |
+
+Ambari Server Values    
+
+| Parameter                                         | Description                                           | Default                               |
+|---------------------------------------------------|-------------------------------------------------------|---------------------------------------|
+| `ambariserver.enable`                             | Flag to enable and disable Ambari Server Install      | `true`                                |
+| `ambariserver.name`                               | The name used in various properties                   | `ambariserver`                        |
+| `ambariserver.componentName`                      | The component name used in various properties         | `ambari`                              |
+| `ambariserver.image.repository`                   | Image repo URL `It uses custom ambari image`          | `index.docker.io/rohitrsh/hdp`        |
+| `ambariserver.persistentVolume.enabled`           | The PVC enable flag to control volumes                | `true`                                |
+| `ambariserver.persistentVolume.storageClassName`  | The storage class to be used for PVC                  | `gp2` In the case of EKS              |
+| `ambariserver.persistentVolume.accessModes`       | PVC access mode                                       | `ReadWriteOnce`                       |
+| `ambariserver.persistentVolume.storage`           | The storage size to be allocated to pod               | `1Gi`                                 |
+
+Master Node Values  
+
+| Parameter                                         | Description                                           | Default                               |
+|---------------------------------------------------|-------------------------------------------------------|---------------------------            |
+| `masternode.enable`                               | Flag to enable and disable Master Node Install        | `true`                                |
+| `masternode.name`                                 | The name used in various properties                   | `masternode`                          |
+| `masternode.componentName`                        | The component name used in various properties         | `master`                              |
+| `masternode.image.repository`                     | Image repo URL `It uses custom hdp image`             | `index.docker.io/rohitrsh/hdp`        |
+| `masternode.persistentVolume.enabled`             | The PVC enable flag to control volumes                | `true`                                |
+| `masternode.persistentVolume.storageClassName`    | The storage class to be used for PVC                  | `gp2` In the case of EKS              |
+| `masternode.persistentVolume.accessModes`         | PVC access mode                                       | `ReadWriteOnce`                       |             
+| `masternode.persistentVolume.storage`             | The storage size to be allocated to pod               | `10Gi`                                |
+| `masternode.persistentVolume.mountPath`           | The storage mount path will be used by HDFS           | `/hadoop`              
+            
+Data Node Values            
+            
+| Parameter                                         | Description                                           | Default                               |
+|---------------------------------------------------|-------------------------------------------------------|---------------------------            |
+| `datanode.enable`                                 | Flag to enable and disable Data Node Install          | `true`                                |
+| `datanode.name`                                   | The name used in various properties                   | `datanoe`                             |
+| `datanode.componentName`                          | The component name used in various properties         | `data`                                |
+| `datanode.image.repository`                       | Image repo URL `It uses custom hdp image`             | `index.docker.io/rohitrsh/hdp`        |
+| `datanode.persistentVolume.enabled`               | The PVC enable flag to control volumes                | `true`                                |
+| `datanode.persistentVolume.storageClassName`      | The storage class to be used for PVC                  | `gp2` In the case of EKS              |
+| `datanode.persistentVolume.accessModes`           | PVC access mode                                       | `ReadWriteOnce`                       |             
+| `datanode.persistentVolume.storage`               | The storage size to be allocated to pod               | `10Gi`                                |
+| `datanode.persistentVolume.mountPath`             | The storage mount path will be used by HDFS           | `/hadoop`                                
+            
+Edge Node Values
+            
+| Parameter                                         | Description                                           | Default                               |
+|---------------------------------------------------|-------------------------------------------------------|---------------------------            |
+| `edgenode.enable`                                 | Flag to enable and disable Edge Node Install          | `true`                                |
+| `edgenode.name`                                   | The name used in various properties                   | `edgenode`                            |
+| `edgenode.componentName`                          | The component name used in various properties         | `edge`                                |
+| `edgenode.image.repository`                       | Image repo URL `It uses custom hdp image`             | `index.docker.io/rohitrsh/hdp`        |
+| `edgenode.persistentVolume.enabled`               | The PVC enable flag to control volumes                | `true`                                |
+| `edgenode.persistentVolume.storageClassName`      | The storage class to be used for PVC                  | `gp2` In the case of EKS              |
+| `edgenode.persistentVolume.accessModes`           | PVC access mode                                       | `ReadWriteOnce`                       |             
+| `edgenode.persistentVolume.storage`               | The storage size to be allocated to pod               | `10Gi`                                |
+| `edgenode.persistentVolume.mountPath`             | The storage mount path will be used by HDFS           | `/hadoop`                                
+            
+Metacontroller Values             
+            
+| Parameter                                         | Description                                           | Default                               |
+|---------------------------------------------------|-------------------------------------------------------|---------------------------            |
+| `metacontroller.enable`                           | Flag to enable and disable Metacontroller Install     | `true`                                |
+| `metacontroller.name`                             | The name used in various properties                   | `metacontroller`                      |
+| `metacontroller.image.repository`                 | Image repo URL                                        | `metacontroller/metacontroller`       |
+| `metacontroller.rbac.create`                      | RBAC creation for metacontroller                      | `true`                                |
+| `metacontroller.serviceAccount.create`            | Service Account creation for metacontroller           | `true`                                | 
+| `metacontroller.crds.create`                      | CRDs install for metacontroller                       | `truw`                                
+            
+Kerberose Values            
+            
+| Parameter                                         | Description                                           | Default                               |
+|---------------------------------------------------|-------------------------------------------------------|---------------------------            |
+| `kdc.enable`                                      | Flag to enable and disable Edge Node Instal           | `true`                                |
+| `kdc.name`                                        | The name used in various properties                   | `kdcserve`                            |
+| `kdc.componentName`                               | The component name used in various properties         | `kdc`                                 |
+| `kdc.realmName`                                   | The kerberos REALM name                               | `DEMO.COM`                            |
+| `kdc.image.repository`                            | Image repo URL                                        | `index.docker.io/rohitrsh/kdc`        |
+| `kdc.persistentVolume.enabled`                    | The PVC enable flag to control volumes                | `true`                                |
+| `kdc.persistentVolume.storageClassName`           | The storage class to be used for PVC                  | `gp2` In the case of EKS              |
+| `kdc.persistentVolume.accessModes`                | PVC access mode                                       | `ReadWriteOnce`                       | 
+| `kdc.persistentVolume.storage`                    | The storage size to be allocated to pod               | `10Gi`                                |                
+
+Full and up-to-date documentation can be found in the comments of the `values.yaml` file.
+
+
+
+## License
+
+HoKStack Helm Chart is under Apache 2.0 license. See [LICENSE](../LICENSE) for details.
