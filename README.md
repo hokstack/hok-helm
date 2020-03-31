@@ -3,8 +3,9 @@
 ## What is Hok(Stack)
 HoK is Hadoop on Kubernetes. It deploys Hadoop Stack on kubernets. Using that we can have multiple Hadoop cluster running in the Kubernetes namespaces. It have saveral of benefits
 
-![Overview](images/hok-overview.svg)
+<!-- ![Overview](images/hok-overview.svg) -->
 
+<img src="images/hok-overview.svg" width="300">
 
 ## Installation
 
