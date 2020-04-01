@@ -232,7 +232,7 @@ Full and up-to-date documentation can be found in the comments of the `values.ya
 HokStack is maintained by:
 
 * [Rohit Sharma](https://www.linkedin.com/in/rohitrsh/) ([@rohitrsh](https://twitter.com/rohitrsh))
-* [Shubhomoy Biswas](https://www.linkedin.com/in/shubhomoybiswas//) ([@weavera](https://twitter.com/))
+* [Shubhomoy Biswas](https://www.linkedin.com/in/shubhomoybiswas//) ([@shubhmoy](https://twitter.com/))
 
 
 
