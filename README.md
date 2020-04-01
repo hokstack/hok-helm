@@ -116,10 +116,27 @@ By default it will install following statefulsets.
 
 
 ## Accessing Cluster UI
-Dante
+In the stack, you will find dante-proxy pod is running its SOCKS5 proxy running in container using that you can access the Ambari UI and other Hadoop UIs.
+
+Get the NodePort of dante-proxy using below command
+```
+$ kubectl get svc dante-proxy
+```
+Enter this port and Node IP address to the web-browser in proxy section, preferably `Firefox` as nowadays Chrome manages my orgnisations.
+
+ <p align="left">
+  <img width="300" height="300" src="images/sock5-settings.png">
+</p>
 
 ## Accessing Cluster and submiting Jobs
-Edgenode
+
+Acces cluster using the edgenode port you can login into that using
+
+```
+kubectl exec -it edgenode-0 bash
+```
+
+Aslo SSH is enabled on the edgenode-0 it can be accessed
 
 ## Helm chart Configuration
 
@@ -233,7 +250,6 @@ HokStack is maintained by:
 
 * [Rohit Sharma](https://www.linkedin.com/in/rohitrsh/) ([@rohitrsh](https://twitter.com/rohitrsh))
 * [Shubhomoy Biswas](https://www.linkedin.com/in/shubhomoybiswas//) ([@shubhmoy](https://twitter.com/))
-
 
 
 ## License
