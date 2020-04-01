@@ -83,8 +83,8 @@ By default it will install following statefullsets.
  * masternode
  * datanode
  
- <p align="center">
-  <img width="500" height="400" src="images/hdp-cluster.gif">
+ <p align="left">
+  <img width="500" height="300" src="images/hdp-cluster.gif">
 </p>
 
 ## Component will be installed
