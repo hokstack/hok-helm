@@ -1,11 +1,12 @@
 # HokStack - Haoop On Kubernetes
 
 ## What is Hok(Stack)
-HoK is Hadoop on Kubernetes. It deploys Hadoop Stack on kubernets. Using that we can have multiple Hadoop cluster running in the Kubernetes namespaces. It have saveral of benefits
 
-<!-- ![Overview](images/hok-overview.svg) -->
+HoK is Hadoop on Kubernetes, It helps you to deploy Hadoop stack on Kubernetes
 
-<!-- <img src="images/hok-overview.svg" align="center" width="500"> -->
+## Overview
+
+Kubernetes is now proven technology to deploy and distribute modules quickly and efficiently. Many cloud vendors are now offering Hadoop as a service. Companies are moving towards the model where they want to provision an instance of service on the fly and use it for analytics. Usually, it takes weeks to provision a production-ready Hadoop cluster. This platform is container-native platform serves as the Backbone for all other analytical services. This provides the user to spawn Hadoop cluster using the self-serve portal, which helps them to onboard the team quickly and efficiently so their developers can start using the cluster as soon as they join the team
 
 <p align="center">
   <img width="500" height="400" src="images/hok-overview.svg">
@@ -34,7 +35,7 @@ To install the HokStack via Helm run the following command:
 
 ### Adding Hadoop on Kubernetes repository
 ```
-$ helm repo add hok https://raw.githubusercontent.com/hadoop-on-kubernetes/hok-helm/master/repos/stable
+$ helm repo add hok https://raw.githubusercontent.com/hokstack/hok-helm/master/repos/stable
 ```
 
 ## Update procedure
@@ -76,6 +77,12 @@ Remove OneAgent custom resources and clean-up all remaining OneAgent Operator sp
 $ helm remove <release name> -n <namespace>
 ```
 
+## HDP Statefulsets Detail
+By default it will install following statefullsets.
+ * ambariserver
+ * masternode
+ * datanode
+ 
 ## Component will be installed
  * HDFS
  * Mapreduce
