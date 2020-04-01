@@ -1,4 +1,4 @@
-# HokStack - Haoop On Kubernetes
+# HokStack - Hadoop On Kubernetes
 
 ## What is Hok(Stack)
 
