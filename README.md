@@ -10,8 +10,8 @@ $ kubectl apply -f crd.yaml
 
 Create the ClusterRole, ClusterRoleBinding and ServiceAccount
 ```sh
-$ kubectl apply -f serviceaccount.yaml
-$ kubectl apply -f cluster_role.yaml
+$ kubectl apply -f service_account.yaml
+$ kubectl apply -f clusterrole.yaml
 $ kubectl apply -f cluster_role_binding.yaml
 ```
 
