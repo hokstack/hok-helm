@@ -21,7 +21,7 @@ This Helm Chart requires Helm 2.
 ### Platforms
 Depending of the version of the HoKStack, it supports the following platforms:
 
-| Hadoop On Kubernetes Helm Chart version        | Kubernetes | OpenShift Container Platform |
+| HoKStack Helm Chart version        | Kubernetes | OpenShift Container Platform |
 | ---------------------------------------------- | ---------- | ---------------------------- |
 | v1.0.0                                         | 1.11+      | 3.11+                        |
 | v1.0.0                                         | 1.11+      | 3.11+                        |
