@@ -227,6 +227,14 @@ Global values
 Full and up-to-date documentation can be found in the comments of the `values.yaml` file.
 
 
+## About Us
+
+HokStack is maintained by:
+
+* [Rohit Sharma](https://www.linkedin.com/in/rohitrsh/) ([@rohitrsh](https://twitter.com/rohitrsh))
+* [Shubhomoy Biswas](https://www.linkedin.com/in/shubhomoybiswas//) ([@weavera](https://twitter.com/))
+
+
 
 ## License
 
