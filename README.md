@@ -47,26 +47,26 @@ $ helm repo update
 ```
 ## Repo search
 
-You can then check for the latest version by searching your Helm repositories for the Hadoop on kubernetes
+You can then check for the latest version by searching your Helm repositories for the HokStack
 
 ```
-$ helm search hok hadoop-on-kubernetes
+$ helm search hok 
 ```
 
 ## Rollout for first team with default values
 
-You can then check for the latest version by searching your Helm repositories for the Hadoop on kubernetes
+You can then check for the latest version by searching your Helm repositories for the HokStack
 
 ```
-$ helm install hok/hadoop-on-kubernetes --name hok-team1 --set teamname=team1 --namespace team1
+$ helm install hok/hokstack --name hok-team1 --set teamname=team1 --namespace team1
 ```
 
 ## Rollout for second team with default values
 
-You can then check for the latest version by searching your Helm repositories for the Hadoop on kubernetes
+You can then check for the latest version by searching your Helm repositories for the HokStack
 
 ```
-$ helm install hok/hadoop-on-kubernetes --name hok-team2 --set teamname=team2 --set metacontroller.crds.create=false --namespace team2
+$ helm install hok/hokstack --name hok-team2 --set teamname=team2 --set metacontroller.crds.create=false --namespace team2
 ```
 
 ## Remove hadoop-on-kubernetes
@@ -78,27 +78,39 @@ $ helm remove <release name> -n <namespace>
 ```
 
 ## HDP Statefulsets Detail
-By default it will install following statefullsets.
+
+By default it will install following statefulsets.
+
+ * postgres
  * ambariserver
- * masternode
- * datanode
+ * masternode 
+ * datanode `3 replica`
+ * edgenode
+ * dante-proxy 
+ * kdcserver `optional`
+ * metacontroller
  
  <p align="left">
-  <img width="500" height="300" src="images/hdp-cluster.gif">
+  <img width="600" height="300" src="images/hok-deployed.gif">
 </p>
 
 ## Component will be installed
  * HDFS
+ * Yarn
  * Mapreduce
+ * Tez
  * Hive
  * Oozie
- * Yarn
+ * ZooKeeper
+ * Kafka
  * Spark
  * Spark2
- * Tez
 
+ <p align="left">
+  <img width="700" height="400" src="images/hok-ambari-dash.gif">
+</p>
 
-### Ambari blueprints
+### Need more components?
 
 `hdfsyarn.json` configuration can be changed by defining environment variables in the following form:
 
@@ -119,7 +131,7 @@ Global values
 |---------------------------------------------------|-------------------------------------------------------|---------------------------------------|
 | `teamname`                                        | Team name value to seprate the install                | team1                                 |
 
-PostgreSQL values   
+#### PostgreSQL values   
 
 | Parameter                                         | Description                                           | Default                               |
 |---------------------------------------------------|-------------------------------------------------------|---------------------------------------|
@@ -132,7 +144,7 @@ PostgreSQL values
 | `postgres.persistentVolume.accessModes`           | PVC access mode                                       | `ReadWriteOnce`                       |
 | `postgres.persistentVolume.storage`               | The storage size to be allocated to pod               | `10Gi`                                |
 
-Ambari Server Values    
+### Ambari Server Values    
 
 | Parameter                                         | Description                                           | Default                               |
 |---------------------------------------------------|-------------------------------------------------------|---------------------------------------|
@@ -145,7 +157,7 @@ Ambari Server Values
 | `ambariserver.persistentVolume.accessModes`       | PVC access mode                                       | `ReadWriteOnce`                       |
 | `ambariserver.persistentVolume.storage`           | The storage size to be allocated to pod               | `1Gi`                                 |
 
-Master Node Values  
+### Master Node Values  
 
 | Parameter                                         | Description                                           | Default                               |
 |---------------------------------------------------|-------------------------------------------------------|---------------------------            |
@@ -159,7 +171,7 @@ Master Node Values
 | `masternode.persistentVolume.storage`             | The storage size to be allocated to pod               | `10Gi`                                |
 | `masternode.persistentVolume.mountPath`           | The storage mount path will be used by HDFS           | `/hadoop`              
             
-Data Node Values            
+### Data Node Values            
             
 | Parameter                                         | Description                                           | Default                               |
 |---------------------------------------------------|-------------------------------------------------------|---------------------------            |
@@ -173,7 +185,7 @@ Data Node Values
 | `datanode.persistentVolume.storage`               | The storage size to be allocated to pod               | `10Gi`                                |
 | `datanode.persistentVolume.mountPath`             | The storage mount path will be used by HDFS           | `/hadoop`                                
             
-Edge Node Values
+### Edge Node Values
             
 | Parameter                                         | Description                                           | Default                               |
 |---------------------------------------------------|-------------------------------------------------------|---------------------------            |
@@ -187,7 +199,7 @@ Edge Node Values
 | `edgenode.persistentVolume.storage`               | The storage size to be allocated to pod               | `10Gi`                                |
 | `edgenode.persistentVolume.mountPath`             | The storage mount path will be used by HDFS           | `/hadoop`                                
             
-Metacontroller Values             
+### Metacontroller Values             
             
 | Parameter                                         | Description                                           | Default                               |
 |---------------------------------------------------|-------------------------------------------------------|---------------------------            |
@@ -198,7 +210,7 @@ Metacontroller Values
 | `metacontroller.serviceAccount.create`            | Service Account creation for metacontroller           | `true`                                | 
 | `metacontroller.crds.create`                      | CRDs install for metacontroller                       | `truw`                                
             
-Kerberose Values            
+### Kerberose Values            
             
 | Parameter                                         | Description                                           | Default                               |
 |---------------------------------------------------|-------------------------------------------------------|---------------------------            |
