@@ -1,20 +1,20 @@
 apiVersion: v1
 entries:
-  hadoop-on-kubernetes:
+  hokstack:
   - apiVersion: v1
     appVersion: 2.6.0
-    created: "2020-03-29T22:52:53.520788+01:00"
-    description: A Helm chart for Hadoop
-    digest: 43e5d666127cb25fd8556bdf344c07b7e35d49b9b755a20fe570421e93ae3675
-    home: https://hadoop-on-kubernetes.github.io/
+    created: "2020-04-01T17:19:51.430435+01:00"
+    description: HokStack Helm chart to Hadoop on Kubernetes
+    digest: 8e21a42fff4c526e47676cd88abb536afdc43937b60ccf444a63896c738e8f8f
+    home: https://hokstack.github.io/
     icon: https://i.imgur.com/PLPqVBj.png
     maintainers:
     - email: rohitrsh@gmail.com
       name: Rohit Sharma
-    name: hadoop-on-kubernetes
+    name: hokstack
     sources:
-    - https://github.com/hadoop-on-kubernetes/hok-helm
+    - https://github.com/hokstack/hok-helm
     urls:
-    - https://raw.githubusercontent.com/hadoop-on-kubernetes/hok-helm/master/repos/stable/hadoop-on-kubernetes-1.0.0.tgz
+    - https://raw.githubusercontent.com/hokstack/hok-helm/master/repos/stable/hokstack-1.0.0.tgz
     version: 1.0.0
-generated: "2020-03-29T22:52:53.519571+01:00"
+generated: "2020-04-01T17:19:51.428206+01:00"
