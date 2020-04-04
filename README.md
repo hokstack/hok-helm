@@ -115,7 +115,7 @@ By default it will install following statefulsets.
 
 ## Need more components?
 
-`hdfsyarn.json` contains the ambari blueprints, add componenets in the `host_groups` to add more HDP componenets.
+[hdfsyarn.json](hokstack/files/ambari/hdfsyarn.json) contains the ambari blueprints, add componenets in the `host_groups` to add more HDP componenets.
 
 
 ## Accessing Cluster UI
@@ -266,4 +266,4 @@ Currently we work on the code in our free time, any assistance is highly appreci
 
 ## License
 
-HoKStack Helm Chart is under Apache 2.0 license. See [LICENSE](LICENSE.md) for details.
+HoKStack is under Apache 2.0 license. See [LICENSE.md](LICENSE.md) for details.
