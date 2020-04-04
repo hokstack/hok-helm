@@ -1,5 +1,9 @@
 # HokStack - Hadoop On Kubernetes
 
+<p align="center">
+  <img width="300" height="200" src="images/hok-logo.png">
+</p>
+
 ## What is Hok(Stack)
 
 HoK is Hadoop on Kubernetes, It helps you to deploy Hadoop stack on Kubernetes
@@ -9,7 +13,7 @@ HoK is Hadoop on Kubernetes, It helps you to deploy Hadoop stack on Kubernetes
 Kubernetes is now proven technology to deploy and distribute modules quickly and efficiently. Many cloud vendors are now offering Hadoop as a service. Companies are moving towards the model where they want to provision an instance of service on the fly and use it for analytics. Usually, it takes weeks to provision a production-ready Hadoop cluster. This platform is container-native platform serves as the Backbone for all other analytical services. This provides the user to spawn Hadoop cluster using the self-serve portal, which helps them to onboard the team quickly and efficiently so their developers can start using the cluster as soon as they join the team
 
 <p align="center">
-  <img width="500" height="400" src="images/hok-overview.svg">
+  <img width="500" height="400" src="images/new.svg">
 </p>
 
 ## Installation
