@@ -1,15 +1,18 @@
 # HokStack - Hadoop On Kubernetes
 
-## What is Hok(Stack)
+<p align="center">
+  <img width="700" height="300" src="images/cover.png">
+</p>
 
-HoK is Hadoop on Kubernetes, It helps you to deploy Hadoop stack on Kubernetes
 
 ## Overview
+
+HoK is Hadoop on Kubernetes, It helps you to deploy Hadoop stack on Kubernetes
 
 Kubernetes is now proven technology to deploy and distribute modules quickly and efficiently. Many cloud vendors are now offering Hadoop as a service. Companies are moving towards the model where they want to provision an instance of service on the fly and use it for analytics. Usually, it takes weeks to provision a production-ready Hadoop cluster. This platform is container-native platform serves as the Backbone for all other analytical services. This provides the user to spawn Hadoop cluster using the self-serve portal, which helps them to onboard the team quickly and efficiently so their developers can start using the cluster as soon as they join the team
 
 <p align="center">
-  <img width="500" height="400" src="images/hok-overview.svg">
+  <img width="600" height="500" src="images/hok-overview.svg">
 </p>
 
 ## Installation
@@ -27,7 +30,7 @@ Depending of the version of the HoKStack, it supports the following platforms:
 | v1.0.0                                         | 1.11+      | 3.11+                        |
 
 
-## Quick Start
+### Quick Start
 
 The Hok need saperet namespace which can be `team-name` or `value-stream` anything unique.
 It deploys all the Hadoop components in statefulsets.
@@ -38,14 +41,14 @@ To install the HokStack via Helm run the following command:
 $ helm repo add hok https://raw.githubusercontent.com/hokstack/hok-helm/master/repos/stable
 ```
 
-## Update procedure
+### Update procedure
 
 To update simply update your helm repositories and check the latest version
 
 ```
 $ helm repo update
 ```
-## Repo search
+### Repo search
 
 You can then check for the latest version by searching your Helm repositories for the HokStack
 
@@ -53,7 +56,7 @@ You can then check for the latest version by searching your Helm repositories fo
 $ helm search hok 
 ```
 
-## Rollout for first team with default values
+### Rollout for first team with default values
 
 You can then check for the latest version by searching your Helm repositories for the HokStack
 
@@ -61,7 +64,7 @@ You can then check for the latest version by searching your Helm repositories fo
 $ helm install hok/hokstack --name hok-team1 --set teamname=team1 --namespace team1
 ```
 
-## Rollout for second team with default values
+### Rollout for second team with default values
 
 You can then check for the latest version by searching your Helm repositories for the HokStack
 
@@ -69,7 +72,7 @@ You can then check for the latest version by searching your Helm repositories fo
 $ helm install hok/hokstack --name hok-team2 --set teamname=team2 --set metacontroller.crds.create=false --namespace team2
 ```
 
-## Remove hadoop-on-kubernetes
+### Remove hadoop-on-kubernetes
 
 Remove OneAgent custom resources and clean-up all remaining OneAgent Operator specific objects:
 
@@ -110,9 +113,9 @@ By default it will install following statefulsets.
   <img width="700" height="400" src="images/hok-ambari-dash.gif">
 </p>
 
-### Need more components?
+## Need more components?
 
-`hdfsyarn.json` configuration can be changed by defining environment variables in the following form:
+`hdfsyarn.json` contains the ambari blueprints, add componenets in the `host_groups` to add more HDP componenets.
 
 
 ## Accessing Cluster UI
@@ -244,6 +247,7 @@ Global values
 Full and up-to-date documentation can be found in the comments of the `values.yaml` file.
 
 
+
 ## About Us
 
 HokStack is maintained by:
@@ -251,7 +255,15 @@ HokStack is maintained by:
 * [Rohit Sharma](https://www.linkedin.com/in/rohitrsh/) ([@rohitrsh](https://twitter.com/rohitrsh))
 * [Shubhomoy Biswas](https://www.linkedin.com/in/shubhomoybiswas//) ([@shubhmoy](https://twitter.com/))
 
+## Credits
+
+Initially inspired from https://www.cloudera.com/tutorials/getting-started-with-hdp-sandbox.html
+
+## Contributing
+
+Currently we work on the code in our free time, any assistance is highly appreciated. Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
+
 
 ## License
 
-HoKStack Helm Chart is under Apache 2.0 license. See [LICENSE](../LICENSE) for details.
+HoKStack Helm Chart is under Apache 2.0 license. See [LICENSE](LICENSE.md) for details.
