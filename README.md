@@ -1,7 +1,7 @@
 # HokStack - Hadoop On Kubernetes
 
 <p align="center">
-  <img width="700" height="300" src="images/cover.png">
+  <img width="700" height="300" src="images/1.png">
 </p>
 
 
