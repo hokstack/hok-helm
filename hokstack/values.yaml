@@ -12,7 +12,7 @@ postgres:
   replicaCount: 1
 
   image:
-    repository: index.docker.io/rohitrsh/postgresql
+    repository: index.docker.io/hokstack/postgresql
   
   securityContext:
     runAsUser: 0
@@ -44,7 +44,7 @@ ambariserver:
   componentName: ambari
 
   image:
-    repository: index.docker.io/rohitrsh/hdp
+    repository: index.docker.io/hokstack/hdp
   
   securityContext:
     runAsUser: 0
@@ -76,7 +76,7 @@ masternode:
   componentName: master
 
   image:
-    repository: index.docker.io/rohitrsh/hdp
+    repository: index.docker.io/hokstack/hdp
   
   securityContext:
     runAsUser: 0
@@ -108,7 +108,7 @@ datanode:
   componentName: data
 
   image:
-    repository: index.docker.io/rohitrsh/hdp
+    repository: index.docker.io/hokstack/hdp
   
   securityContext:
     runAsUser: 0
@@ -140,7 +140,7 @@ edgenode:
   componentName: edge
 
   image:
-    repository: index.docker.io/rohitrsh/hdp
+    repository: index.docker.io/hokstack/hdp
   
   securityContext:
     runAsUser: 0
@@ -186,7 +186,7 @@ danteproxy:
   name: danteproxy
 
   image:
-    repository: index.docker.io/rohitrsh/dante-proxy
+    repository: index.docker.io/hokstack/dante-proxy
 
 
 
@@ -197,7 +197,7 @@ kdc:
   realmName: DEMO.COM
 
   image:
-    repository: index.docker.io/rohitrsh/kdc
+    repository: index.docker.io/hokstack/kdc
 
   persistentVolume:
     enabled: true
