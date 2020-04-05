@@ -158,7 +158,7 @@ Global values
 | `postgres.enabled`                                | Flag to enable and disable Postgres SQL install       | `true`                                |
 | `postgres.name`                                   | The name used in various properties                   | `postgres`                            |
 | `postgres.replicaCount`                           | Postgres pod replica count                            | `1`                                   |
-| `postgres.image.repository`                       | Image repo URL `It uses custom postgres image`        | `index.docker.io/rohitrsh/postgresql` |
+| `postgres.image.repository`                       | Image repo URL `It uses custom postgres image`        | `index.docker.io/hokstack/postgresql` |
 | `postgres.persistentVolume.enabled`               | The PVC enable flag to control volumes                | `true`                                |
 | `postgres.storageClassName`                       | The storage class to be used for PVC                  | `gp2` - In the case of EKS            |
 | `postgres.persistentVolume.accessModes`           | PVC access mode                                       | `ReadWriteOnce`                       |
@@ -171,7 +171,7 @@ Global values
 | `ambariserver.enable`                             | Flag to enable and disable Ambari Server Install      | `true`                                |
 | `ambariserver.name`                               | The name used in various properties                   | `ambariserver`                        |
 | `ambariserver.componentName`                      | The component name used in various properties         | `ambari`                              |
-| `ambariserver.image.repository`                   | Image repo URL `It uses custom ambari image`          | `index.docker.io/rohitrsh/hdp`        |
+| `ambariserver.image.repository`                   | Image repo URL `It uses custom ambari image`          | `index.docker.io/hokstack/hdp`        |
 | `ambariserver.persistentVolume.enabled`           | The PVC enable flag to control volumes                | `true`                                |
 | `ambariserver.persistentVolume.storageClassName`  | The storage class to be used for PVC                  | `gp2` In the case of EKS              |
 | `ambariserver.persistentVolume.accessModes`       | PVC access mode                                       | `ReadWriteOnce`                       |
@@ -184,7 +184,7 @@ Global values
 | `masternode.enable`                               | Flag to enable and disable Master Node Install        | `true`                                |
 | `masternode.name`                                 | The name used in various properties                   | `masternode`                          |
 | `masternode.componentName`                        | The component name used in various properties         | `master`                              |
-| `masternode.image.repository`                     | Image repo URL `It uses custom hdp image`             | `index.docker.io/rohitrsh/hdp`        |
+| `masternode.image.repository`                     | Image repo URL `It uses custom hdp image`             | `index.docker.io/hokstack/hdp`        |
 | `masternode.persistentVolume.enabled`             | The PVC enable flag to control volumes                | `true`                                |
 | `masternode.persistentVolume.storageClassName`    | The storage class to be used for PVC                  | `gp2` In the case of EKS              |
 | `masternode.persistentVolume.accessModes`         | PVC access mode                                       | `ReadWriteOnce`                       |             
@@ -198,7 +198,7 @@ Global values
 | `datanode.enable`                                 | Flag to enable and disable Data Node Install          | `true`                                |
 | `datanode.name`                                   | The name used in various properties                   | `datanoe`                             |
 | `datanode.componentName`                          | The component name used in various properties         | `data`                                |
-| `datanode.image.repository`                       | Image repo URL `It uses custom hdp image`             | `index.docker.io/rohitrsh/hdp`        |
+| `datanode.image.repository`                       | Image repo URL `It uses custom hdp image`             | `index.docker.io/hokstack/hdp`        |
 | `datanode.persistentVolume.enabled`               | The PVC enable flag to control volumes                | `true`                                |
 | `datanode.persistentVolume.storageClassName`      | The storage class to be used for PVC                  | `gp2` In the case of EKS              |
 | `datanode.persistentVolume.accessModes`           | PVC access mode                                       | `ReadWriteOnce`                       |             
@@ -212,7 +212,7 @@ Global values
 | `edgenode.enable`                                 | Flag to enable and disable Edge Node Install          | `true`                                |
 | `edgenode.name`                                   | The name used in various properties                   | `edgenode`                            |
 | `edgenode.componentName`                          | The component name used in various properties         | `edge`                                |
-| `edgenode.image.repository`                       | Image repo URL `It uses custom hdp image`             | `index.docker.io/rohitrsh/hdp`        |
+| `edgenode.image.repository`                       | Image repo URL `It uses custom hdp image`             | `index.docker.io/hokstack/hdp`        |
 | `edgenode.persistentVolume.enabled`               | The PVC enable flag to control volumes                | `true`                                |
 | `edgenode.persistentVolume.storageClassName`      | The storage class to be used for PVC                  | `gp2` In the case of EKS              |
 | `edgenode.persistentVolume.accessModes`           | PVC access mode                                       | `ReadWriteOnce`                       |             
@@ -238,7 +238,7 @@ Global values
 | `kdc.name`                                        | The name used in various properties                   | `kdcserve`                            |
 | `kdc.componentName`                               | The component name used in various properties         | `kdc`                                 |
 | `kdc.realmName`                                   | The kerberos REALM name                               | `DEMO.COM`                            |
-| `kdc.image.repository`                            | Image repo URL                                        | `index.docker.io/rohitrsh/kdc`   |
+| `kdc.image.repository`                            | Image repo URL                                        | `index.docker.io/hokstack/kdc`   |
 | `kdc.persistentVolume.enabled`                    | The PVC enable flag to control volumes                | `true`                                |
 | `kdc.persistentVolume.storageClassName`           | The storage class to be used for PVC                  | `gp2` In the case of EKS              |
 | `kdc.persistentVolume.accessModes`                | PVC access mode                                       | `ReadWriteOnce`                       | 
