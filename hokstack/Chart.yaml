@@ -4,7 +4,7 @@ description: HokStack Helm chart to Hadoop on Kubernetes
 name: hokstack
 version: 1.0.0
 icon: https://i.imgur.com/OpZGcib.png
-home: https://hokstack.github.io/
+home: https://hokstack.io
 type: application
 maintainers:
   - name: Rohit Sharma
