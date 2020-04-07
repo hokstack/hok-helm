@@ -3,10 +3,10 @@ entries:
   hokstack:
   - apiVersion: v1
     appVersion: 2.6.0
-    created: "2020-04-06T10:08:00.858751+01:00"
+    created: "2020-04-07T22:03:28.002352+01:00"
     description: HokStack Helm chart to Hadoop on Kubernetes
-    digest: bfa361414ad4539afc6f1a7f9aabbb30703e4409c3f3d8bd06e30dcb7d7a4029
-    home: https://hokstack.github.io/
+    digest: a813f435ca46c36f16a6a89cad96f29404c8324283898e3208e6aaa3c4cfea67
+    home: https://hokstack.io
     icon: https://i.imgur.com/OpZGcib.png
     maintainers:
     - email: rohitrsh@gmail.com
@@ -19,4 +19,4 @@ entries:
     urls:
     - hokstack-1.0.0.tgz
     version: 1.0.0
-generated: "2020-04-06T10:08:00.841172+01:00"
+generated: "2020-04-07T22:03:27.999774+01:00"

@@ -1,7 +1,7 @@
 # HokStack - Hadoop On Kubernetes
 
 <p align="center">
-  <img width="700" height="300" src="https://raw.githubusercontent.com/hokstack/hok-helm/master/hokstack/images/cover.png">
+  <img width="700" height="300" src="https://raw.githubusercontent.com/hokstack/hok-helm/master/images/cover.png">
 </p>
 
 
@@ -12,7 +12,7 @@ HoK is Hadoop on Kubernetes, It helps you to deploy Hadoop stack on Kubernetes
 Kubernetes is now proven technology to deploy and distribute modules quickly and efficiently. Many cloud vendors are now offering Hadoop as a service. Companies are moving towards the model where they want to provision an instance of service on the fly and use it for analytics. Usually, it takes weeks to provision a production-ready Hadoop cluster. This platform is container-native platform serves as the Backbone for all other analytical services. This provides the user to spawn Hadoop cluster using the self-serve portal, which helps them to onboard the team quickly and efficiently so their developers can start using the cluster as soon as they join the team
 
 <p align="center">
-  <img width="600" height="500" src="https://raw.githubusercontent.com/hokstack/hok-helm/master/hokstack/images/hok-overview.svg">
+  <img width="600" height="500" src="https://raw.githubusercontent.com/hokstack/hok-helm/master/images/hok-overview.png">
 </p>
 
 ## Installation
@@ -94,7 +94,7 @@ By default it will install following statefulsets.
  * metacontroller
  
  <p align="left">
-  <img width="600" height="300" src="https://raw.githubusercontent.com/hokstack/hok-helm/master/hokstack/images/hok-deployed.gif">
+  <img width="600" height="300" src="https://raw.githubusercontent.com/hokstack/hok-helm/master/images/hok-deployed.gif">
 </p>
 
 ## Component will be installed
@@ -110,7 +110,7 @@ By default it will install following statefulsets.
  * Spark2
 
  <p align="left">
-  <img width="700" height="400" src="https://raw.githubusercontent.com/hokstack/hok-helm/master/hokstack/images/hok-ambari-dash.gif">
+  <img width="700" height="400" src="https://raw.githubusercontent.com/hokstack/hok-helm/master/images/hok-ambari-dash.gif">
 </p>
 
 ## Need more components?
@@ -128,7 +128,7 @@ $ kubectl get svc dante-proxy
 Enter this port and Node IP address to the web-browser in proxy section, preferably `Firefox` as nowadays Chrome manages my orgnisations.
 
  <p align="left">
-  <img width="300" height="300" src="https://raw.githubusercontent.com/hokstack/hok-helm/master/hokstack/images/sock5-settings.png">
+  <img width="300" height="300" src="https://raw.githubusercontent.com/hokstack/hok-helm/master/images/sock5-settings.png">
 </p>
 
 ## Accessing Cluster and submiting Jobs
