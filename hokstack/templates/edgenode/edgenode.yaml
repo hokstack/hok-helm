@@ -23,7 +23,7 @@ spec:
       initContainers:
         - name: {{ .Values.edgenode.componentName }}-init
           image: {{ .Values.edgenode.image.repository }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           command: ["/scripts/edge-init.sh"]
           securityContext:
             runAsUser: 0
@@ -36,7 +36,7 @@ spec:
       containers:
         - name: {{ .Values.edgenode.name }}
           image: {{ .Values.edgenode.image.repository }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           command: {{ .Values.edgenode.containerCmd}}
           securityContext:
             runAsUser: {{.Values.edgenode.securityContext.runAsUser}}
@@ -101,6 +101,9 @@ spec:
           - name: {{ .Values.edgenode.componentName }}-init
             mountPath: /scripts/{{ .Values.edgenode.componentName }}-init.sh
             subPath: {{ .Values.edgenode.componentName }}-init.sh
+          - name: {{ .Values.edgenode.componentName }}-hostsupdate
+            mountPath: /scripts/hostsUpdate.sh
+            subPath: hostsUpdate.sh
           - name: {{ .Values.edgenode.componentName }}-start
             mountPath: /scripts/{{ .Values.edgenode.componentName }}-start.sh
             subPath: {{ .Values.edgenode.componentName }}-start.sh
@@ -126,6 +129,10 @@ spec:
       - name: {{ .Values.edgenode.componentName }}-init
         configMap:
           name: {{ .Values.edgenode.componentName }}-init
+          defaultMode: 0744
+      - name: {{ .Values.edgenode.componentName }}-hostsupdate
+        configMap:
+          name: {{ .Values.edgenode.componentName }}-hostsupdate
           defaultMode: 0744
       - name: {{ .Values.edgenode.componentName }}-start
         configMap:

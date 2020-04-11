@@ -1,0 +1,8 @@
+{{- if .Values.masternode.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.masternode.componentName }}-hostsupdate
+data:
+{{ (tpl (.Files.Glob "files/masternode/hostsUpdate.sh").AsConfig . ) | indent 4 }}
+{{- end }}

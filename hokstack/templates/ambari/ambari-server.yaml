@@ -21,7 +21,7 @@ spec:
       initContainers:
         - name: {{ .Values.ambariserver.componentName }}-init
           image: {{ .Values.ambariserver.image.repository }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           command: ["/scripts/ambari-init.sh"]
           securityContext:
             runAsUser: 0
@@ -34,7 +34,7 @@ spec:
       containers:
         - name: {{ .Values.ambariserver.name }}
           image: {{ .Values.ambariserver.image.repository }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           command: {{ .Values.ambariserver.containerCmd}}
           securityContext:
             runAsUser: {{.Values.ambariserver.securityContext.runAsUser}}
@@ -53,6 +53,8 @@ spec:
           env:
           - name: DBHOST
             value: postgres-0
+          - name: AMBARISERVER
+            value: "ambariserver-0"
           - name: PODIP
             valueFrom:
               fieldRef:
@@ -69,6 +71,9 @@ spec:
           - name: {{ .Values.ambariserver.componentName }}-init
             mountPath: /scripts/{{ .Values.ambariserver.componentName }}-init.sh
             subPath: {{ .Values.ambariserver.componentName }}-init.sh
+          - name: {{ .Values.ambariserver.componentName }}-hostsupdate
+            mountPath: /scripts/hostsUpdate.sh
+            subPath: hostsUpdate.sh
           - name: {{ .Values.ambariserver.componentName }}-start
             mountPath: /scripts/{{ .Values.ambariserver.componentName }}-start.sh
             subPath: {{ .Values.ambariserver.componentName }}-start.sh
@@ -92,6 +97,10 @@ spec:
       - name: {{ .Values.ambariserver.componentName }}-init
         configMap:
           name: {{ .Values.ambariserver.componentName }}-init
+          defaultMode: 0744
+      - name: {{ .Values.ambariserver.componentName }}-hostsupdate
+        configMap:
+          name: {{ .Values.ambariserver.componentName }}-hostsupdate
           defaultMode: 0744
       - name: {{ .Values.ambariserver.componentName }}-start
         configMap:

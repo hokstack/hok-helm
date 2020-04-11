@@ -8,3 +8,5 @@ hostname $PODNAME
 echo $PODNAME > /etc/hostname
 /scripts/data-ssh-config.sh
 echo "AllowUsers *@10.42.*.*" >> sshd_config
+
+curl -u admin:admin -X POST -H 'X-Requested-By:ambari' -d'{"RequestInfo":{"context":"Updating /etc/hosts file", "action" : "update_hosts", "service_name" : "", "component_name":"", "hosts":"ambariserver-0"}}' http://$AMBARISERVER:8080/api/v1/clusters/$NAMESPACE/requests

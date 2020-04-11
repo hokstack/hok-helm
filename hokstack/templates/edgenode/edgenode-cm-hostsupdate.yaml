@@ -1,0 +1,8 @@
+{{- if .Values.edgenode.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.edgenode.componentName }}-hostsupdate
+data:
+{{ (tpl (.Files.Glob "files/edgenode/hostsUpdate.sh").AsConfig . ) | indent 4 }}
+{{- end }}

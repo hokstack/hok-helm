@@ -4,5 +4,5 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.masternode.componentName }}-krb5-conf
 data:
-{{ (tpl (.Files.Glob "files/edgenode/krb5.conf").AsConfig . ) | indent 4 }}
+{{ (tpl (.Files.Glob "files/masternode/krb5.conf").AsConfig . ) | indent 4 }}
 {{- end }}
