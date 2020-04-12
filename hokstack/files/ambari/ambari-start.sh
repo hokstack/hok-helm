@@ -17,7 +17,7 @@ curl -v -k -u admin:admin -H "X-Requested-By:ambari" -X POST http://localhost:80
 curl --user admin:admin -H 'X-Requested-By:admin' -X POST http://localhost:8080/api/v1/blueprints/hdfs --data-binary @/scripts/hdfsyarn.json
 curl --user admin:admin -H 'X-Requested-By:admin' -X POST http://localhost:8080/api/v1/clusters/$NAMESPACE --data-binary @/scripts/hdfs.json
 curl --user admin:admin -H 'X-Requested-By:admin'  -X POST http://localhost:8080/api/v1/clusters/$NAMESPACE/hosts/$PODNAME.$NAMESPACE
-curl --silent -u admin:admin -H "X-Requested-By: ambari" -X POST -d '{"Users/user_name":"hokstack","Users/password":"h0kStack","Users/active":"true","Users/admin":"true"}' http://localhost:8080/api/v1/users 
+curl -iv -u admin:admin -H "X-Requested-By: ambari" -X POST -d '{"Users/user_name":"hokstack","Users/password":"h0kStack","Users/active":"true","Users/admin":"true"}' http://localhost:8080/api/v1/users 
 
 while true; do
   sleep 3

@@ -7,8 +7,8 @@ spec:
   type: NodePort
   ports:
   - port: 1080
-    nodePort: 31080
     protocol: TCP
+    nodePort: 31080
   selector:
     app: dante-proxy
 ---
