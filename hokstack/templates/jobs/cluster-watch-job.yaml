@@ -1,0 +1,47 @@
+{{- if .Values.ambariserver.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cluster-watch-job
+  # annotations:
+  #   "helm.sh/hook": "post-install"
+spec:
+  template:
+    spec:
+      containers:
+      - name: cluster-watch
+        image: {{ .Values.ambariserver.image.repository }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        command: ["bash","-c", "/scripts/cluster-watch.sh"]
+        env:
+        - name: AMBARISERVER
+          value: "ambariserver-0"
+        - name: DATANODE
+          value: "datanode"
+        - name: PODIP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: PODNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        volumeMounts:
+        - name: cluster-watch-sh
+          mountPath: /scripts/cluster-watch.sh
+          subPath: cluster-watch.sh
+      restartPolicy: OnFailure
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: cluster-watch-sh
+        configMap:
+          name: cluster-watch-sh
+          defaultMode: 0777
+  backoffLimit: 5
+  completions: 1
+  parallelism: 1
+  {{- end }}
