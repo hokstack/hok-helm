@@ -25,7 +25,7 @@ spec:
       initContainers:
         - name: {{ .Values.datanode.componentName }}-init
           image: {{ .Values.ambariserver.image.repository }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           command: ["/scripts/data-init.sh"]
           securityContext:
             runAsUser: 0
@@ -38,7 +38,7 @@ spec:
       containers:
         - name: {{ .Values.datanode.name }}
           image: {{ .Values.datanode.image.repository }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           command: {{ .Values.datanode.containerCmd}}
           securityContext:
             runAsUser: {{.Values.datanode.securityContext.runAsUser}}
@@ -93,6 +93,9 @@ spec:
           - name: {{ .Values.datanode.componentName }}-init
             mountPath: /scripts/{{ .Values.datanode.componentName }}-init.sh
             subPath: {{ .Values.datanode.componentName }}-init.sh
+          - name: {{ .Values.datanode.componentName }}-hostsupdate
+            mountPath: /scripts/hostsUpdate.sh
+            subPath: hostsUpdate.sh
           - name: {{ .Values.datanode.componentName }}-start
             mountPath: /scripts/{{ .Values.datanode.componentName }}-start.sh
             subPath: {{ .Values.datanode.componentName }}-start.sh
@@ -118,6 +121,10 @@ spec:
       - name: {{ .Values.datanode.componentName }}-init
         configMap:
           name: {{ .Values.datanode.componentName }}-init
+          defaultMode: 0744
+      - name: {{ .Values.datanode.componentName }}-hostsupdate
+        configMap:
+          name: {{ .Values.datanode.componentName }}-hostsupdate
           defaultMode: 0744
       - name: {{ .Values.datanode.componentName }}-start
         configMap:

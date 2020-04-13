@@ -1,0 +1,9 @@
+{{- if .Values.datanode.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.datanode.componentName }}-hostsupdate
+data:
+{{ (tpl (.Files.Glob "files/datanode/hostsUpdate.sh").AsConfig . ) | indent 4 }}
+{{- end }}
+

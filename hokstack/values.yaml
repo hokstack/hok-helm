@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 teamname: shubh-demo1
+imagePullPolicy: Always
 
 postgres:
   enabled: true
