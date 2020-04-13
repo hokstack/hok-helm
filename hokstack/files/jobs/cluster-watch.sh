@@ -3,18 +3,18 @@
 export TERM=xterm
 
 while ! nslookup ambariserver-0 > /dev/null || ! nc -w1 ambariserver-0 8080 > /dev/null; do
+    tput cuu1
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] [INFO] Waiting for Ambari to Come up!"
     sleep 2
 done
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] [INFO] Ambari Up, Checking for cluster installation."
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] [INFO] Ambari is up, Checking for cluster installation."
 
-echo "Ambari server is $AMBARISERVER"
-echo "Cluster Namespace is $NAMESPACE"
 FirstReq=$(curl -s --user admin:admin -H 'X-Requested-By:mycompany' -X GET http://$AMBARISERVER:8080/api/v1/clusters/$NAMESPACE/requests/1 |jq .status)
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] [INFO] Cluster request 1 HTTP code is $FirstReq"
 
 while [[ $FirstReq == 404 ]]; do
   FirstReq=$(curl -s --user admin:admin -H 'X-Requested-By:mycompany' -X GET http://$AMBARISERVER:8080/api/v1/clusters/$NAMESPACE/requests/1 |jq .status)
+  tput cuu1
   echo "[$(date '+%Y-%m-%d %H:%M:%S')] [INFO] Waiting for cluster installation invocation"
   sleep 2
 done
