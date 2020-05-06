@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-teamname: shubh-demo1
+teamname: team1
 imagePullPolicy: Always
 
 postgres:
@@ -205,3 +205,15 @@ kdc:
     storageClassName: gp2
     accessModes: ReadWriteOnce
     storage: 10Gi
+
+clusterwatch:
+  enabled: true
+
+cleanup:
+  enabled: true
+
+  removestatefulest:
+    enabled: true
+
+  removepvc:
+    enabled: true

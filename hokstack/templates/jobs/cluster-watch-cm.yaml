@@ -1,4 +1,4 @@
-{{- if .Values.ambariserver.enabled }}
+{{- if .Values.clusterwatch.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

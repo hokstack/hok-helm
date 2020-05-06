@@ -1,18 +1,19 @@
-{{- if .Values.clusterwatch.enabled }}
+{{- if .Values.cleanup.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: cluster-watch-job
-  # annotations:
-  #   "helm.sh/hook": "post-install"
+  name: cleanup-job
+  annotations:
+    "helm.sh/hook": "post-delete"
 spec:
   template:
     spec:
+      serviceAccountName: hok-admin
       containers:
-      - name: cluster-watch
+      - name: cleanup
         image: {{ .Values.ambariserver.image.repository }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
-        command: ["bash","-c", "/scripts/cluster-watch.sh"]
+        command: ["bash","-c", "/scripts/cleanup.sh"]
         env:
         - name: AMBARISERVER
           value: "ambariserver-0"
@@ -31,15 +32,15 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
         volumeMounts:
-        - name: cluster-watch-sh
-          mountPath: /scripts/cluster-watch.sh
-          subPath: cluster-watch.sh
+        - name: cleanup-sh
+          mountPath: /scripts/cleanup.sh
+          subPath: cleanup.sh
       restartPolicy: OnFailure
       terminationGracePeriodSeconds: 0
       volumes:
-      - name: cluster-watch-sh
+      - name: cleanup-sh
         configMap:
-          name: cluster-watch-sh
+          name: cleanup-sh
           defaultMode: 0777
   backoffLimit: 5
   completions: 1

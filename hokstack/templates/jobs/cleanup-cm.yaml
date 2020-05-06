@@ -1,0 +1,8 @@
+{{- if .Values.cleanup.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cleanup-sh
+data:
+{{ (tpl (.Files.Glob "files/jobs/cleanup.sh").AsConfig . ) | indent 4 }}
+{{- end }}
