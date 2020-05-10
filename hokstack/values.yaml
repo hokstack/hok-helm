@@ -214,6 +214,3 @@ cleanup:
 
   removestatefulest:
     enabled: true
-
-  removepvc:
-    enabled: true

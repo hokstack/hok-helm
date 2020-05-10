@@ -3,6 +3,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cleanup-sh
+  annotations:
+    "helm.sh/hook": "pre-install"
 data:
 {{ (tpl (.Files.Glob "files/jobs/cleanup.sh").AsConfig . ) | indent 4 }}
 {{- end }}

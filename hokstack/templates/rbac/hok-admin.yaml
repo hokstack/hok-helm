@@ -1,7 +1,11 @@
+{{- if .Values.cleanup.enabled }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: hok-admin
+  name: {{ .Values.teamname }}-hok-admin
+  annotations:
+    # "helm.sh/hook": "pre-delete"
+    # "helm.sh/hook-delete-policy": "hook-succeeded"
 rules:
 - apiGroups:
   - '*'
@@ -17,18 +21,25 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: hok-admin
+  name: {{ .Values.teamname }}-hok-admin
+  annotations:
+    # "helm.sh/hook": "pre-delete"
+    # "helm.sh/hook-delete-policy": "hook-succeeded"
 subjects:
 - kind: ServiceAccount
-  name: hok-admin
+  name: {{ .Values.teamname }}-hok-admin
   namespace: {{ .Values.teamname }}
 roleRef:
   kind: ClusterRole
-  name: hok-admin
+  name: {{ .Values.teamname }}-hok-admin
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: hok-admin
+  name: {{ .Values.teamname }}-hok-admin
   namespace: {{ .Values.teamname }}
+  annotations:
+    # "helm.sh/hook": "pre-delete"
+    # "helm.sh/hook-delete-policy": "hook-succeeded"
+{{- end }}

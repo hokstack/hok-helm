@@ -4,11 +4,11 @@ kind: Job
 metadata:
   name: cleanup-job
   annotations:
-    "helm.sh/hook": "post-delete"
+    "helm.sh/hook": "pre-delete"
 spec:
   template:
     spec:
-      serviceAccountName: hok-admin
+      serviceAccountName: {{ .Values.teamname }}-hok-admin
       containers:
       - name: cleanup
         image: {{ .Values.ambariserver.image.repository }}

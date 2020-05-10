@@ -48,6 +48,9 @@ spec:
             postStart:
               exec:
                 command: {{.Values.datanode.lifecycle.postStart.exec.command}}
+            # preStop:
+            #   exec:
+            #     command: ["/bin/sh", "-c", "PID=$(pidof java) && kill $PID && while ps -p $PID > /dev/null; do sleep 1; done"]
           ports:
           - containerPort: 2181
           - containerPort: 50070
